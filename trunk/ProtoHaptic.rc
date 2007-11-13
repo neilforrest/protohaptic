@@ -1,0 +1,980 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\ProtoHaptic.ico"
+IDR_PROTOHTYPE          ICON                    "res\\ProtoHapticDoc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR  16, 15
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    SEPARATOR
+    BUTTON      ID_APP_ABOUT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New\tCtrl+N",                ID_FILE_NEW
+        MENUITEM SEPARATOR
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        POPUP "Import"
+        BEGIN
+            MENUITEM "AbstractModel Code\tCtrl+I",  ID_IMPORT_ABSTRACTMODELCODE
+            MENUITEM "GHOST Code",                  ID_IMPORT_GHOSTCODE
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE
+        MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Undo\tCtrl+Z",               ID_EDIT_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
+        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
+        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
+        MENUITEM SEPARATOR
+        MENUITEM "Shape &Properties\tS",        ID_EDIT_SHAPEPROPERTIES
+        MENUITEM "Document Options",            ID_EDIT_DOCOPTIONS
+        MENUITEM "Application Options",         ID_EDIT_APPOPTIONS
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Edit Mode\tShift+Ctrl+E",    ID_VIEW_EDITMODE, CHECKED
+        MENUITEM "&View Mode\tShift+Ctrl+V",    ID_VIEW_VIEWMODE, CHECKED
+        MENUITEM SEPARATOR
+        MENUITEM "&Center Camera\tShift+Ctrl+C", ID_VIEW_CENTERCAMERA
+        MENUITEM "&Restore Camera\tESC",        ID_VIEW_RESTORECAMERA
+        MENUITEM SEPARATOR
+        MENUITEM "Code View",                   ID_VIEW_CODE
+        MENUITEM "Graphical View",              ID_VIEW_GRAPHIC
+    END
+    POPUP "&Tool"
+    BEGIN
+        MENUITEM "Se&lection Tool\tShift+L",    ID_TOOL_SELECTIONTOOL
+        MENUITEM SEPARATOR
+        MENUITEM "Cu&be\tShift+B",              ID_TOOL_CUBE
+        MENUITEM "&Sphere\tShift+S",            ID_TOOL_SPHERE
+        MENUITEM "&Cylinder/Cone\tShift+C",     ID_TOOL_CYLINDERCONE
+        MENUITEM "Triangle\tShift+T",           ID_TOOL_TRIANGLE
+        MENUITEM "Torus",                       ID_TOOL_TORUS
+        MENUITEM SEPARATOR
+        MENUITEM "&Group Shapes\tShift+G",      ID_TOOL_GROUPSHAPES
+        MENUITEM "&Ungroup Shape\tShift+U",     ID_TOOL_UNGROUPSHAPE
+        MENUITEM "Group All",                   ID_TOOL_GROUPALL
+        MENUITEM SEPARATOR
+        MENUITEM "&Delete Shape\tDELETE",       ID_TOOL_DELETESHAPE
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About ProtoHaptic...",       ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS 
+BEGIN
+    "B",            ID_ACCEL_CUBE,          VIRTKEY, SHIFT, NOINVERT
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    "C",            ID_ACCEL_CYLINDER,      VIRTKEY, SHIFT, NOINVERT
+    "C",            ID_ACCEL_CENTER,        VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "E",            ID_ACCEL_EDITMODE,      VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "G",            ID_ACCEL_GROUP,         VIRTKEY, SHIFT, NOINVERT
+    "L",            ID_ACCEL_SELECT,        VIRTKEY, SHIFT, NOINVERT
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_ACCEL_SHAPEPROPERTIES, VIRTKEY, NOINVERT
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_ACCEL_SPHERE,        VIRTKEY, SHIFT, NOINVERT
+    "U",            ID_ACCEL_UNGROUP,       VIRTKEY, SHIFT, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_ACCEL_VIEWMODE,      VIRTKEY, SHIFT, CONTROL, NOINVERT
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
+    VK_DELETE,      ID_ACCEL_DELETE,        VIRTKEY, NOINVERT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG  0, 0, 235, 55
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About ProtoHaptic"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "ProtoHaptic Version 1.0",IDC_STATIC,40,10,119,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2005",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "FileDescription", "ProtoHaptic MFC Application"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "ProtoHaptic"
+            VALUE "LegalCopyright", "Copyright (C) 2005"
+            VALUE "OriginalFilename", "ProtoHaptic.EXE"
+            VALUE "ProductName", "ProtoHaptic Application"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "ProtoHaptic\n\nProtoH\n\n\nProtoHaptic.Document\nProtoH Document"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "ProtoHaptic"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active document\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.K.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_TOOLBAR1            BITMAP                  "res\\toolbar1.bmp"
+IDR_TOOLBAR2            BITMAP                  "res\\toolbar2.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_TOOLBAR1 TOOLBAR  16, 15
+BEGIN
+    BUTTON      ID_BUTTON32771
+    SEPARATOR
+    BUTTON      ID_BUTTON32772
+    BUTTON      ID_BUTTON32777
+    BUTTON      ID_BUTTON32778
+    BUTTON      ID_BUTTON_TRI
+    BUTTON      ID_BUTTON_TORUS
+    SEPARATOR
+    BUTTON      ID_BUTTONMEMO
+    BUTTON      ID_BUTTONGOTO
+    SEPARATOR
+    BUTTON      ID_BUTTON32785
+    BUTTON      ID_BUTTON32786
+    SEPARATOR
+    BUTTON      ID_BUTTONDELETE
+    BUTTON      ID_BUTTON32818
+END
+
+IDR_TOOLBAR2 TOOLBAR  16, 15
+BEGIN
+    BUTTON      ID_BUTTONEDIT
+    BUTTON      ID_BUTTONVIEW
+    SEPARATOR
+    BUTTON      ID_BUTTONCENTER
+    SEPARATOR
+    BUTTON      ID_SIMRESET
+    BUTTON      ID_BUTTON32822
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG1 DIALOGEX 0, 0, 237, 174
+STYLE DS_SETFONT | WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         "Slider1",IDC_SLIDER1,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,18,36,177,15
+    CONTROL         "Slider1",IDC_SLIDER2,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,18,89,176,15
+    CONTROL         "Slider1",IDC_SLIDER3,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,17,141,177,15
+    LTEXT           "Red",IDC_STATIC,17,23,52,12
+    LTEXT           "Green",IDC_STATIC,17,74,54,12
+    LTEXT           "Blue",IDC_STATIC,27,126,57,13
+    GROUPBOX        "Colour",IDC_STATIC,7,7,223,160
+END
+
+IDD_SHAPE DIALOGEX 0, 0, 255, 293
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Shape Properties"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         "Tab1",IDC_TAB1,"SysTabControl32",0x0,7,7,241,261
+    PUSHBUTTON      "Close",IDC_CLOSESHAPES,193,272,55,14
+END
+
+IDD_DIALOG2 DIALOGEX 0, 0, 238, 256
+STYLE DS_SETFONT | WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         "Slider1",IDC_SLIDER1,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,15,27,175,15
+    CONTROL         "Slider1",IDC_SLIDER2,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,15,62,174,15
+    CONTROL         "Slider1",IDC_SLIDER3,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,15,95,174,15
+    LTEXT           "Stiffness",IDC_STATIC,31,17,52,12
+    LTEXT           "Damping",IDC_STATIC,32,49,54,12
+    LTEXT           "Static Friction",IDC_STATIC,32,83,57,13
+    CONTROL         "Slider1",IDC_SLIDER4,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,15,129,173,15
+    LTEXT           "Dynamic Friction",IDC_STATIC,32,116,57,13
+    GROUPBOX        "Logical",IDC_STATIC,7,157,224,59
+    GROUPBOX        "Physical",IDC_STATIC,7,7,224,145
+    CONTROL         "Slider5",IDC_SLIDER5,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,23,171,183,24
+    PUSHBUTTON      "Configure Logical Properties",IDC_FORMULA,27,195,176,14
+    EDITTEXT        IDC_EDIT_STIFFNESS1,195,28,26,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DAMPING1,195,62,26,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_STATIC1,195,95,26,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DYNAMIC1,195,131,26,14,ES_AUTOHSCROLL
+    CONTROL         "Control composite members",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,220,100,10
+    CONTROL         "Enable Custom Rendering (Where supported)",IDC_CHECK2,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,235,152,10
+END
+
+IDD_DIALOG3 DIALOGEX 0, 0, 238, 239
+STYLE DS_SETFONT | WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    EDITTEXT        IDC_POSX,22,36,40,14,ES_AUTOHSCROLL
+    LTEXT           "x",IDC_STATIC,23,25,8,8
+    EDITTEXT        IDC_POSY,72,36,40,14,ES_AUTOHSCROLL
+    LTEXT           "y",IDC_STATIC,73,25,8,8
+    EDITTEXT        IDC_POSZ,122,36,40,14,ES_AUTOHSCROLL
+    LTEXT           "z",IDC_STATIC,123,25,8,8
+    GROUPBOX        "Specify New Position",IDC_STATIC,14,15,210,46
+    PUSHBUTTON      "Apply",IDC_BUTTON1,170,36,40,14
+    EDITTEXT        IDC_SIZEX,22,91,40,14,ES_AUTOHSCROLL
+    LTEXT           "x",IDC_STATIC,23,80,8,8
+    EDITTEXT        IDC_SIZEY,72,91,40,14,ES_AUTOHSCROLL
+    LTEXT           "y",IDC_STATIC,73,80,8,8
+    EDITTEXT        IDC_SIZEZ,122,91,40,14,ES_AUTOHSCROLL
+    LTEXT           "z",IDC_STATIC,123,80,8,8
+    GROUPBOX        "Specify New Size",IDC_STATIC,14,70,210,46
+    PUSHBUTTON      "Apply",IDC_BUTTON3,170,91,40,14
+    EDITTEXT        IDC_ROTX,22,148,40,14,ES_AUTOHSCROLL
+    LTEXT           "x",IDC_STATIC,23,137,8,8
+    EDITTEXT        IDC_ROTY,72,148,40,14,ES_AUTOHSCROLL
+    LTEXT           "y",IDC_STATIC,73,137,8,8
+    EDITTEXT        IDC_ROTZ,122,148,40,14,ES_AUTOHSCROLL
+    LTEXT           "z",IDC_STATIC,123,137,8,8
+    GROUPBOX        "Specify New Rotation (In Degrees)",IDC_STATIC,14,127,210,46
+    PUSHBUTTON      "Apply",IDC_BUTTON4,170,148,40,14
+END
+
+IDD_MEMO DIALOG  0, 0, 186, 65
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Create Memo"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,75,44,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,129,44,50,14
+    EDITTEXT        IDC_EDIT1,7,23,172,14,ES_AUTOHSCROLL
+    LTEXT           "Please enter a name to refer to this memo point:",IDC_STATIC,7,7,172,14
+END
+
+IDD_GOTO_MEMO DIALOGEX 0, 0, 125, 148
+STYLE DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Goto Memo"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,7,126,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,68,126,50,14
+    LISTBOX         IDC_LIST2,7,7,110,115,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_DIALOG4 DIALOG  0, 0, 178, 133
+STYLE DS_SETFONT | WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Interactive (Influenced by PHANToM)",IDC_PROXY_DYN,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,97,135,10
+    CONTROL         "Dynamic (Influenced by collisions + gravity)",IDC_CHECK3,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,109,151,10
+    GROUPBOX        "Static or Dynamic",IDC_STATIC,7,87,159,38
+    EDITTEXT        IDC_EDIT1,7,17,159,14,ES_MULTILINE | ES_AUTOHSCROLL | ES_WANTRETURN | ES_NUMBER
+    LTEXT           "Object Mass",IDC_STATIC,7,7,40,8
+    CONTROL         "Slider1",IDC_SLIDER1,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,7,57,159,15
+    LTEXT           "Object Surface Friction",IDC_STATIC,7,44,73,8
+END
+
+IDD_OPTIONS DIALOG  0, 0, 321, 212
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Options"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,264,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,264,24,50,14
+END
+
+IDD_DOCOPTIONS DIALOGEX 0, 0, 305, 240
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Document Options"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "Close",IDOK,248,219,50,14
+    LTEXT           "Document Options: These settings will be applied to and saved with the open document",IDC_STATIC,7,7,291,13
+    LTEXT           "Gravity Strength",IDC_STATIC,21,71,52,8
+    CONTROL         "Slider1",IDC_SLIDER1,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,75,68,207,18
+    LTEXT           "None",IDC_STATIC,76,84,18,8
+    LTEXT           "Strong",IDC_STATIC,267,85,22,8
+    GROUPBOX        "Simulation",IDC_STATIC,7,58,291,155
+    LTEXT           "Simulation Speed",IDC_STATIC,17,143,56,8
+    CONTROL         "Slider1",IDC_SLIDER2,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,75,138,207,18
+    LTEXT           "Slow",IDC_STATIC,76,156,16,8
+    LTEXT           "Fast",IDC_STATIC,268,156,14,8
+    LTEXT           "Air Resistance",IDC_STATIC,26,108,46,8
+    CONTROL         "Slider1",IDC_SLIDER3,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,75,104,207,18
+    LTEXT           "None",IDC_STATIC,76,122,18,8
+    LTEXT           "Strong",IDC_STATIC,268,122,22,8
+    GROUPBOX        "Memo Points",IDC_STATIC,7,19,291,33
+    CONTROL         "Hide in View Mode",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,33,75,10
+    CONTROL         "Enable Dynamic Surface Change in View Mode",IDC_CHECK2,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,25,171,157,10
+    LTEXT           "Option required for interaction with dynamic scenes, but sometimes causes rendering problems.",IDC_STATIC,36,186,247,26
+END
+
+IDD_APPOPTIONS DIALOG  0, 0, 310, 310
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Application Options"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Close",IDOK,192,288,50,14
+    LTEXT           "Application Options: These settings will be applied to and saved with the open application",IDC_STATIC,7,7,291,13
+    LTEXT           "Edit Point Size",IDC_STATIC,21,96,46,8
+    CONTROL         "Slider1",IDC_SLIDER1,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,75,93,207,18
+    LTEXT           "Small",IDC_STATIC,75,111,18,8
+    LTEXT           "Large",IDC_STATIC,267,110,19,8
+    GROUPBOX        "Haptic Interface",IDC_STATIC,7,83,293,116
+    LTEXT           "Rotation Guessing",IDC_STATIC,17,167,59,8
+    CONTROL         "Slider1",IDC_SLIDER2,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,75,163,207,18
+    LTEXT           "Slow/Low Error",IDC_STATIC,76,181,50,8
+    LTEXT           "Fast/High Error",IDC_STATIC,241,181,49,8
+    LTEXT           "Edit Point Snap\nDistance",IDC_STATIC,16,132,54,22
+    CONTROL         "Slider1",IDC_SLIDER3,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,75,129,207,18
+    LTEXT           "Close",IDC_STATIC,76,146,18,8
+    LTEXT           "Far",IDC_STATIC,268,146,11,8
+    GROUPBOX        "Pre-Set Profiles",IDC_STATIC,7,23,130,56
+    CONTROL         "Beginner",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON,13,35,44,10
+    CONTROL         "Intermediate",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,13,47,55,10
+    CONTROL         "Expert",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,13,59,36,10
+    GROUPBOX        "Audio Events (On/Off)",IDC_STATIC,144,23,156,56
+    CONTROL         "Touch/Untouch Shape",IDC_CHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,150,36,90,10
+    CONTROL         "Acquire Edit Point",IDC_CHECK3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,150,50,68,10
+    CONTROL         "Snap-To",IDC_CHECK4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,248,36,43,10
+    GROUPBOX        "PHANToM Devices",IDC_STATIC,173,246,127,35
+    PUSHBUTTON      "Configure Devices",IDC_BUTTON1,199,258,75,14
+    GROUPBOX        "Additional View Ports",IDC_STATIC,7,246,157,56
+    CONTROL         "Plan",IDC_CHECK5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,264,30,10
+    CONTROL         "Side Elevation",IDC_CHECK6,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,85,265,61,10
+    PUSHBUTTON      "Save",IDC_BUTTON_SAVE,250,288,50,14
+    CONTROL         "Front Elevation",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,285,63,10
+    GROUPBOX        "Rendering",IDC_STATIC,7,202,293,40
+    LTEXT           "Number of Stacks/Slices\n\rfor rendering curved shapes",IDC_STATIC,13,215,102,19
+    CONTROL         "Slider4",IDC_SLIDER4,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,112,210,179,17
+    LTEXT           "Low: Fast/Inaccurate",IDC_STATIC,116,228,69,8
+    LTEXT           "High: Slow/Accurate",IDC_STATIC,221,228,69,9
+END
+
+IDD_PHANTOMS DIALOG  0, 0, 210, 198
+STYLE DS_SYSMODAL | DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "PHANToM Devices"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Close",IDOK,99,177,50,14
+    GROUPBOX        "Primary Device",IDC_STATIC,7,7,196,53
+    EDITTEXT        IDC_EDIT1,23,30,87,14,ES_AUTOHSCROLL
+    CONTROL         "Use Default",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,127,32,53,10
+    GROUPBOX        "Name",IDC_STATIC,17,19,175,32
+    GROUPBOX        "Secondary Device",IDC_STATIC,7,67,196,104
+    EDITTEXT        IDC_EDIT2,22,106,163,14,ES_AUTOHSCROLL
+    GROUPBOX        "Name",IDC_STATIC,16,95,175,32
+    GROUPBOX        "Active/Passive",IDC_STATIC,14,135,176,29
+    CONTROL         "Active",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON,116,146,36,10
+    CONTROL         "Passive",IDC_RADIO5,"Button",BS_AUTORADIOBUTTON | WS_GROUP,23,146,41,10
+    CONTROL         "Enable Device",IDC_CHECK3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,80,63,10
+    PUSHBUTTON      "Apply",IDC_BUTTON1,153,177,50,14
+END
+
+IDD_FORMULAS DIALOG  0, 0, 242, 245
+STYLE DS_SYSMODAL | DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Logical Properties"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Close",IDOK,129,224,50,14
+    CONTROL         "Enable Logical Properties Control",IDC_ENABLE_LP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,14,120,10
+    GROUPBOX        "Physical Properties Formulae",IDC_STATIC,7,34,228,181
+    LTEXT           "Note: Use ""x"" to denote the value of the logical property",IDC_STATIC,18,48,211,14
+    LTEXT           "Stiffness",IDC_STATIC,17,71,28,8
+    LTEXT           "Dampening",IDC_STATIC,17,105,37,8
+    LTEXT           "Static Friction",IDC_STATIC,17,140,44,8
+    LTEXT           "Dynamic Friction",IDC_STATIC,18,177,53,8
+    EDITTEXT        IDC_EDIT1,17,82,208,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,18,116,208,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT6,18,150,208,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT3,18,189,208,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Apply",IDC_APPLY,185,224,50,14
+END
+
+IDD_CODEVIEW DIALOGEX 0, 0, 419, 303
+STYLE DS_SETFONT | WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    EDITTEXT        IDC_EDIT1,7,7,405,272,ES_MULTILINE | ES_AUTOVSCROLL | ES_WANTRETURN | WS_VSCROLL
+    PUSHBUTTON      "Save Code",IDC_BUTTON1,319,282,93,14
+    COMBOBOX        IDC_COMBO1,103,283,48,30,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Output Options",IDC_BUTTON2,158,282,50,14
+    LTEXT           "Select Output Language / API",IDC_STATIC,7,288,88,8
+END
+
+IDD_DIALOG5 DIALOGEX 0, 0, 187, 110
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Code Output Options"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,130,89,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,75,89,50,14
+    GROUPBOX        "Output Transformations",IDC_STATIC,7,7,173,72
+    LTEXT           "Scaling Factor",IDC_STATIC,17,28,47,8
+    EDITTEXT        IDC_EDIT1,73,25,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,126,25,40,14,ES_AUTOHSCROLL
+    CONTROL         "Centre model at origin",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,75,60,89,10
+END
+
+IDD_VARVALUE DIALOGEX 0, 0, 242, 164
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Provide Literal Value"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,185,143,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,126,143,50,14
+    LTEXT           "Please provide a literal value for the following variable that was encountered whilst importing the source file:",IDC_STATIC,7,7,219,18
+    LTEXT           "Variable Identifier",IDC_STATIC,27,42,59,8
+    LTEXT           "Line Number",IDC_STATIC,42,61,42,8
+    LTEXT           "Literal Value",IDC_STATIC,43,81,42,8
+    EDITTEXT        IDC_EDIT1,94,39,122,14,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_EDIT2,94,59,122,14,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_EDIT3,94,78,122,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Load a Variable Database",IDC_LOAD,16,117,104,14
+    GROUPBOX        "Get values from Database",IDC_STATIC,7,105,228,32
+END
+
+IDD_AMPOSTIMPORT DIALOGEX 0, 0, 254, 185
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "AbstractModel Post Import"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,197,164,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,138,164,50,14
+    LTEXT           "The source code has been successfully imported. Please review the following options and then click OK.",IDC_STATIC,7,7,240,25
+    GROUPBOX        "Model Modifications",IDC_STATIC,7,32,240,57
+    GROUPBOX        "Save Variable/Value Database",IDC_STATIC,7,96,240,58
+    LTEXT           "Click here to save literal values for future imports:",IDC_STATIC,16,115,165,8
+    LTEXT           "Enter a factor by which to scale the whole model:",IDC_STATIC,17,50,163,8
+    EDITTEXT        IDC_EDIT1,81,67,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,134,67,40,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Save Database",IDC_BUTTON1,174,132,62,14
+    LTEXT           ".",IDC_STATIC,125,71,8,8
+    PUSHBUTTON      "Apply Scale",IDC_BUTTON_SCALE,186,67,50,14
+END
+
+IDD_DIALOG6 DIALOGEX 0, 0, 238, 239
+STYLE DS_SETFONT | WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    EDITTEXT        IDC_EDIT1,18,24,96,14,ES_AUTOHSCROLL
+    GROUPBOX        "Specify variable name used to refer to object",IDC_STATIC,7,7,224,44
+    PUSHBUTTON      "Apply",IDC_BUTTON1,118,24,50,14
+    PUSHBUTTON      "Auto Name",IDC_BUTTON2,172,24,50,14
+END
+
+IDD_GHOST_PREIMPORT DIALOGEX 0, 0, 279, 183
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Pre-Import Options"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,222,162,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,165,162,50,14
+    LTEXT           "GHOST Code Import Options",IDC_STATIC,7,7,94,8
+    GROUPBOX        "Root Separator (Composite Object)",IDC_STATIC,7,22,265,133
+    LTEXT           "Add all objects encountered to the scene (will result in duplicates when separators are used)",IDC_STATIC,74,51,187,20
+    LTEXT           "Only add the specified separator (composite object) object to the scene. Objects encountered that are not directly or indirectly added to this separator are not imported",IDC_STATIC,69,91,183,33
+    EDITTEXT        IDC_EDIT1,147,129,113,14,ES_AUTOHSCROLL
+    LTEXT           "Root Separator Name",IDC_STATIC,70,131,72,8
+    CONTROL         "Do not use a root separator",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON | WS_GROUP,24,38,106,10
+    CONTROL         "Use the following root separator",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON,25,76,121,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_DIALOG1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 230
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 167
+    END
+
+    IDD_SHAPE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 248
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 286
+    END
+
+    IDD_DIALOG2, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 231
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 249
+    END
+
+    IDD_DIALOG3, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 231
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 232
+    END
+
+    IDD_MEMO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 58
+    END
+
+    IDD_GOTO_MEMO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 118
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 141
+    END
+
+    IDD_DIALOG4, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 166
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 126
+    END
+
+    IDD_OPTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 314
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 205
+    END
+
+    IDD_DOCOPTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 298
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 233
+    END
+
+    IDD_APPOPTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 300
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 302
+    END
+
+    IDD_PHANTOMS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 203
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 191
+    END
+
+    IDD_FORMULAS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 235
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 238
+    END
+
+    IDD_CODEVIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 412
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 296
+    END
+
+    IDD_DIALOG5, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 103
+    END
+
+    IDD_VARVALUE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 235
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 157
+    END
+
+    IDD_AMPOSTIMPORT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 247
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 178
+    END
+
+    IDD_DIALOG6, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 231
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 232
+    END
+
+    IDD_GHOST_PREIMPORT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 272
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 176
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\ProtoHaptic.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    ID_BUTTON32771          "Selection Tool\nSelection Tool"
+    ID_BUTTON32772          "Cube Tool\nCube Tool"
+    ID_BUTTON32777          "Sphere Tool\nSphere Tool"
+    ID_BUTTON32778          "Cylinder\\Cone Tool\nCylinder\\Cone Tool"
+    ID_BUTTONEDIT           "Edit Mode\nEnter Edit Mode"
+    ID_BUTTONVIEW           "View Mode\nEnter View Mode"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_BUTTONCENTER         "Center View on Selected Shape\nCenter On Shape"
+    ID_BUTTON32785          "Group Selected Shapes\nGroup Shapes"
+    ID_BUTTON32786          "Ungroup Composite\nUngroup Shapes"
+    ID_BUTTONMEMO           "Create Memo\nCreate Memo"
+    ID_BUTTONGOTO           "Goto Memo\nGoto Memo"
+    ID_BUTTONDELETE         "Delete Shape\nDelete Shape"
+END
+
+#endif    // English (U.K.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\ProtoHaptic.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
