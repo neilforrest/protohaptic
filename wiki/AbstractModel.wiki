@@ -1,6 +1,6 @@
 #summary AbstractModel Haptic and Graphic API.
 
-= AbstractModel API =
+= Introduction =
 
 The AbstractModel library is a high-level API for constructing scenes. The scenes can then be rendered by any number of graphic and haptic renderers that implement different technologies (e.g. OpenHaptics, OpenGL). 
 The library is being developed by the Royal Veterinary College, but will be released as soon as the API becomes more final. 
