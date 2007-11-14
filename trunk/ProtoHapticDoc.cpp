@@ -501,7 +501,7 @@ void CProtoHapticDoc::Serialize(CArchive& ar)
 			// Unknown shape type
 			if ( s == NULL )
 			{
-				MessageBox ( 0, "There was an error whilst reading the specified file", "Error", MB_OK );
+				MessageBox ( 0, "There was an error whilst reading the specified file: Unknown Shape.", "Error", MB_OK );
 				return;
 			}
 			else
@@ -528,7 +528,7 @@ void CProtoHapticDoc::Serialize(CArchive& ar)
 		else 
 			m_hideMemos= false;
 
-		// Dynamic surface change in view mode
+		// Dynamic surface change in view mode (Version > 4)
 		ar >> i;
 		if(i==1) 
 			m_dynamicSurfaceChange= true; 
