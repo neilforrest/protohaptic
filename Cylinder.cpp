@@ -173,6 +173,7 @@ void CCylinder::drawHapticScene(bool primary_context)
 	}
 	else
 	{
+		// Draw cylinder section
 		if(primary_context)
 			hlBeginShape(HL_SHAPE_CALLBACK, m_shapeID );
 		else
@@ -184,46 +185,47 @@ void CCylinder::drawHapticScene(bool primary_context)
 			(HLcallbackProc) CHapticCylinder::closestSurfaceFeatures, (void *) customCylinder);
 		hlEndShape();
 
+		// Draw disk A
+		if(primary_context)
+			hlBeginShape(HL_SHAPE_CALLBACK, diskAShape->GetShapeID () );
+		else
+			hlBeginShape(HL_SHAPE_CALLBACK, diskAShape->GetShapeID_1 ());
 
-	//	if(primary_context)
-	//		hlBeginShape(HL_SHAPE_CALLBACK, diskAShape->GetShapeID () );
-	//	else
-	//		hlBeginShape(HL_SHAPE_CALLBACK, diskAShape->GetShapeID_1 ());
+		diskATrans->makeIdentity ();
 
-	//diskATrans->makeIdentity ();
+		diskATrans->multRight ( hduMatrix::createRotation ( 1, 0, 0, 0.5*PI ) );
+		diskATrans->multRight ( hduMatrix::createTranslation ( 0, 0, 0.5 ) );
 
-	//diskATrans->multRight ( hduMatrix::createRotation ( 1, 0, 0, 0.5*PI ) );
-	//diskATrans->multRight ( hduMatrix::createTranslation ( 0, 0, 0.5 ) );
+		diskATrans->multRight ( hduMatrix::createScale ( getSizeX(), getSizeY(), getSizeZ() ) );
+		diskATrans->multRight ( getHduMatrix ( getRotation () ) );
+		diskATrans->multRight ( hduMatrix::createTranslation ( getLocationX(), getLocationY(), getLocationZ () ) );
 
-	//diskATrans->multRight ( hduMatrix::createScale ( getSizeX(), getSizeY(), getSizeZ() ) );
-	//diskATrans->multRight ( getHduMatrix ( getRotation () ) );
-	//diskATrans->multRight ( hduMatrix::createTranslation ( getLocationX(), getLocationY(), getLocationZ () ) );
+		hlCallback(HL_SHAPE_INTERSECT_LS, 
+			(HLcallbackProc) CHapticDisk::intersectSurface, (void *) diskA);
+		hlCallback(HL_SHAPE_CLOSEST_FEATURES, 
+			(HLcallbackProc) CHapticDisk::closestSurfaceFeatures, (void *) diskA);
+		hlEndShape();
 
-	//	hlCallback(HL_SHAPE_INTERSECT_LS, 
-	//		(HLcallbackProc) CHapticDisk::intersectSurface, (void *) diskA);
-	//	hlCallback(HL_SHAPE_CLOSEST_FEATURES, 
-	//		(HLcallbackProc) CHapticDisk::closestSurfaceFeatures, (void *) diskA);
-	//	hlEndShape();
+		// Draw disk B
+		if(primary_context)
+			hlBeginShape(HL_SHAPE_CALLBACK, diskBShape->GetShapeID () );
+		else
+			hlBeginShape(HL_SHAPE_CALLBACK, diskBShape->GetShapeID_1 ());
 
-	//if(primary_context)
-	//	hlBeginShape(HL_SHAPE_CALLBACK, diskBShape->GetShapeID () );
-	//else
-	//	hlBeginShape(HL_SHAPE_CALLBACK, diskBShape->GetShapeID_1 ());
+		diskBTrans->makeIdentity ();
 
-	//diskBTrans->makeIdentity ();
+		diskBTrans->multRight ( hduMatrix::createRotation ( 1, 0, 0, -0.5*PI ) );
+		diskBTrans->multRight ( hduMatrix::createTranslation ( 0, 0, -0.5 ) );
 
-	//diskBTrans->multRight ( hduMatrix::createRotation ( 1, 0, 0, -0.5*PI ) );
-	//diskBTrans->multRight ( hduMatrix::createTranslation ( 0, 0, -0.5 ) );
+		diskBTrans->multRight ( hduMatrix::createScale ( getSizeX(), getSizeY(), getSizeZ() ) );
+		diskBTrans->multRight ( getHduMatrix ( getRotation () ) );
+		diskBTrans->multRight ( hduMatrix::createTranslation ( getLocationX(), getLocationY(), getLocationZ () ) );
 
-	//diskBTrans->multRight ( hduMatrix::createScale ( getSizeX(), getSizeY(), getSizeZ() ) );
-	//diskBTrans->multRight ( getHduMatrix ( getRotation () ) );
-	//diskBTrans->multRight ( hduMatrix::createTranslation ( getLocationX(), getLocationY(), getLocationZ () ) );
-
-	//	hlCallback(HL_SHAPE_INTERSECT_LS, 
-	//		(HLcallbackProc) CHapticDisk::intersectSurface, (void *) diskB);
-	//	hlCallback(HL_SHAPE_CLOSEST_FEATURES, 
-	//		(HLcallbackProc) CHapticDisk::closestSurfaceFeatures, (void *) diskB);
-	//	hlEndShape();
+		hlCallback(HL_SHAPE_INTERSECT_LS, 
+			(HLcallbackProc) CHapticDisk::intersectSurface, (void *) diskB);
+		hlCallback(HL_SHAPE_CLOSEST_FEATURES, 
+			(HLcallbackProc) CHapticDisk::closestSurfaceFeatures, (void *) diskB);
+		hlEndShape();
 	}
 
 }

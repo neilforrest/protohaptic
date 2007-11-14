@@ -433,6 +433,7 @@ void CComposite::Serialize(CArchive& ar)
 			}
 		}
 
+		// Version > 4
 		ar >> m_name;
 	}
 }

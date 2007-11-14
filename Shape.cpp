@@ -138,9 +138,7 @@ CControl* CShape::getControl() { return m_control; }
 int boolValue(bool b) { if (b) return 1; else return 0; }
 
 void CShape::Serialize(CArchive& ar) 
-
 {
-
 	if (ar.IsStoring()) {
 		ar << m_locationX
 		   << m_locationY
@@ -210,7 +208,7 @@ void CShape::Serialize(CArchive& ar)
   		ar >> m_staticFString;
   		ar >> m_dynamicFString;
 
-		// Name of shape (used in code)
+		// Name of shape (used in code) (Version > 4)
 		ar >> m_name;
 	}
 }

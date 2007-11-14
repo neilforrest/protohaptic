@@ -30,130 +30,133 @@ bool CHapticCylinder::intersectSurface(const HLdouble startPt[3],
                                     HLenum *face,
                                     void *userdata)
 {
+    CHapticCylinder *pThis = static_cast<CHapticCylinder *>(userdata);    
+
+    hduVector3Dd startPtV(startPt);
+    hduVector3Dd endPtV(endPt);
+    hduVector3Dd intersectionPtV;
+
+	// Undo translation
+	startPtV[0]-= pThis->m_phCylinder->getLocationX ();
+	startPtV[1]-= pThis->m_phCylinder->getLocationY ();
+	startPtV[2]-= pThis->m_phCylinder->getLocationZ ();
+
+	endPtV[0]-= pThis->m_phCylinder->getLocationX ();
+	endPtV[1]-= pThis->m_phCylinder->getLocationY ();
+	endPtV[2]-= pThis->m_phCylinder->getLocationZ ();
+
+	// Transform start and end points by inv of object transformation
+	// Add current items transform to parent transform of children
+	float* transform= pThis->m_phCylinder->getRotation ( );
+
+	// Define the items transform as an hduMatrix
+	hduMatrix rotation 
+			( transform[0],  transform[1],  transform[2],  transform[3], 
+			  transform[4],  transform[5],  transform[6],  transform[7], 
+			  transform[8],  transform[9],  transform[10], transform[11], 
+			  transform[12], transform[13], transform[14], transform[15] );
+
+	hduMatrix invRot= rotation.getInverse ();
+
+	// undo rotation
+	hduVector3Dd tmp;
+	invRot.multVecMatrix ( hduVector3Dd ( startPtV ), tmp );
+	startPtV= tmp;
+
+	invRot.multVecMatrix ( hduVector3Dd ( endPtV ), tmp );
+	endPtV= tmp;
+
+	// Undo scale
+	startPtV[0]/= pThis->m_phCylinder->getSizeX ();
+	startPtV[1]/= pThis->m_phCylinder->getSizeY ();
+	startPtV[2]/= pThis->m_phCylinder->getSizeZ ();
+
+	endPtV[0]/= pThis->m_phCylinder->getSizeX ();
+	endPtV[1]/= pThis->m_phCylinder->getSizeY ();
+	endPtV[2]/= pThis->m_phCylinder->getSizeZ ();
 
 
- //   CHapticCylinder *pThis = static_cast<CHapticCylinder *>(userdata);    
+    bool bFoundIntersection = false;
+    bool bStartInside = pThis->isInside(startPtV);
+    bool bEndInside = pThis->isInside(endPtV);
 
- //   hduVector3Dd startPtV(startPt);
- //   hduVector3Dd endPtV(endPt);
- //   hduVector3Dd intersectionPtV;
+    // Don't proceed if the start and end are on the same side of the surface.
+    if (bStartInside == bEndInside)
+	{
+		//OutputDebugString ( "No Intersect Sphere...\n" );
 
-	//// Undo translation
-	//startPtV[0]-= pThis->m_phCylinder->getLocationX ();
-	//startPtV[1]-= pThis->m_phCylinder->getLocationY ();
-	//startPtV[2]-= pThis->m_phCylinder->getLocationZ ();
+        return false;
+	}
 
-	//endPtV[0]-= pThis->m_phCylinder->getLocationX ();
-	//endPtV[1]-= pThis->m_phCylinder->getLocationY ();
-	//endPtV[2]-= pThis->m_phCylinder->getLocationZ ();
+    if (bEndInside && !bStartInside)
+    {        
+        // Intersect sphere from outside using start->end segment.
+        bFoundIntersection = pThis->intersectSegmentOutIn(
+            startPtV, endPtV, intersectionPtV);
+        *face = HL_FRONT;
+    }
+    else
+    {
+        // Intersect sphere from inside using end->start segment.
+        bFoundIntersection = pThis->intersectSegmentOutIn(
+            endPtV, startPtV, intersectionPtV);
+        *face = HL_BACK;
+		return false;
+    }
 
-	//// Transform start and end points by inv of object transformation
-	//// Add current items transform to parent transform of children
-	//float* transform= pThis->m_phCylinder->getRotation ( );
+    if (bFoundIntersection)
+    {
+        hduVector3Dd intersectionNormalV ( intersectionPtV[0], intersectionPtV[1], 0 );
 
-	//// Define the items transform as an hduMatrix
-	//hduMatrix rotation 
-	//		( transform[0],  transform[1],  transform[2],  transform[3], 
-	//		  transform[4],  transform[5],  transform[6],  transform[7], 
-	//		  transform[8],  transform[9],  transform[10], transform[11], 
-	//		  transform[12], transform[13], transform[14], transform[15] );
+		intersectionNormalV[0]/= pThis->m_phCylinder->getSizeX ();
+		intersectionNormalV[1]/= pThis->m_phCylinder->getSizeY ();
+		intersectionNormalV[2]/= pThis->m_phCylinder->getSizeZ ();
 
-	//hduMatrix invRot= rotation.getInverse ();
+        intersectionNormalV.normalize();
 
-	//// undo rotation
-	//hduVector3Dd tmp;
-	//invRot.multVecMatrix ( hduVector3Dd ( startPtV ), tmp );
-	//startPtV= tmp;
+		rotation.multVecMatrix ( hduVector3Dd ( intersectionNormalV ), tmp );
+		intersectionNormalV= tmp;
 
-	//invRot.multVecMatrix ( hduVector3Dd ( endPtV ), tmp );
-	//endPtV= tmp;
+        // If this is back face intersection, then reverse the normal.
+        if (*face == HL_BACK)
+        {
+            intersectionNormalV *= -1;
+        }
 
+        intersectionPt[0] = intersectionPtV[0];
+        intersectionPt[1] = intersectionPtV[1];
+        intersectionPt[2] = intersectionPtV[2];
 
-	//// Undo scale
-	//startPtV[0]/= pThis->m_phCylinder->getSizeX ();
-	//startPtV[1]/= pThis->m_phCylinder->getSizeY ();
-	//startPtV[2]/= pThis->m_phCylinder->getSizeZ ();
+        intersectionNormal[0] = intersectionNormalV[0];
+        intersectionNormal[1] = intersectionNormalV[1];
+        intersectionNormal[2] = intersectionNormalV[2];        
 
-	//endPtV[0]/= pThis->m_phCylinder->getSizeX ();
-	//endPtV[1]/= pThis->m_phCylinder->getSizeY ();
-	//endPtV[2]/= pThis->m_phCylinder->getSizeZ ();
+		char s[256];
+		sprintf ( s, "%f, %f, %f, %f, %f, %f\n", intersectionNormal[0], intersectionNormal[1], intersectionNormal[2], intersectionPt[0], intersectionPt[1], intersectionPt[2] );
+		OutputDebugString ( s );
 
+		// Apply shapes transform to intersection point
 
- //   bool bFoundIntersection = false;
- //   bool bStartInside = pThis->isInside(startPtV);
- //   bool bEndInside = pThis->isInside(endPtV);
+		// Scale
+		intersectionPt[0]*= pThis->m_phCylinder->getSizeX ();
+		intersectionPt[1]*= pThis->m_phCylinder->getSizeY ();
+		intersectionPt[2]*= pThis->m_phCylinder->getSizeZ ();
 
- //   // Don't proceed if the start and end are on the same side of the surface.
- //   if (bStartInside == bEndInside)
- //       return false;
+		// Rotate
+		rotation.multVecMatrix ( hduVector3Dd ( intersectionPt[0], intersectionPt[1], intersectionPt[2] ), tmp );
+		intersectionPt[0]= tmp[0];
+		intersectionPt[1]= tmp[1];
+		intersectionPt[2]= tmp[2];
 
- //   if (bEndInside && !bStartInside)
- //   {        
- //       // Intersect sphere from outside using start->end segment.
- //       bFoundIntersection = pThis->intersectSegmentOutIn(
- //           startPtV, endPtV, intersectionPtV);
- //       *face = HL_FRONT;
- //   }
- //   else
- //   {
- //       // Intersect sphere from inside using end->start segment.
- //       bFoundIntersection = pThis->intersectSegmentOutIn(
- //           endPtV, startPtV, intersectionPtV);
- //       *face = HL_BACK;
- //   }
+		// Translate
+		intersectionPt[0]+= pThis->m_phCylinder->getLocationX ();
+		intersectionPt[1]+= pThis->m_phCylinder->getLocationY ();
+		intersectionPt[2]+= pThis->m_phCylinder->getLocationZ ();
 
- //   if (bFoundIntersection)
- //   {
- //       hduVector3Dd intersectionNormalV = intersectionPtV;
-	//	intersectionNormalV[2]= 0;
+        return true;
+    }
 
-	//	intersectionNormalV[0]/= pThis->m_phCylinder->getSizeX ();
-	//	intersectionNormalV[1]/= pThis->m_phCylinder->getSizeY ();
-	//	intersectionNormalV[2]/= pThis->m_phCylinder->getSizeZ ();
-
- //       intersectionNormalV.normalize();
-
-	//	rotation.multVecMatrix ( hduVector3Dd ( intersectionNormalV ), tmp );
-	//	intersectionNormalV= tmp;
-
- //       // If this is back face intersection, then reverse the normal.
- //       if (*face == HL_BACK)
- //       {
- //           intersectionNormalV *= -1;
- //       }
-
- //       intersectionPt[0] = intersectionPtV[0];
- //       intersectionPt[1] = intersectionPtV[1];
- //       intersectionPt[2] = intersectionPtV[2];
-
- //       intersectionNormal[0] = intersectionNormalV[0];
- //       intersectionNormal[1] = intersectionNormalV[1];
- //       intersectionNormal[2] = intersectionNormalV[2];        
-
-	//	// Apply shapes transform to intersection point
-
-	//	// Scale
-	//	intersectionPt[0]*= pThis->m_phCylinder->getSizeX ();
-	//	intersectionPt[1]*= pThis->m_phCylinder->getSizeY ();
-	//	intersectionPt[2]*= pThis->m_phCylinder->getSizeZ ();
-
-	//	// Rotate
-	//	rotation.multVecMatrix ( hduVector3Dd ( intersectionPt[0], intersectionPt[1], intersectionPt[2] ), tmp );
-	//	intersectionPt[0]= tmp[0];
-	//	intersectionPt[1]= tmp[1];
-	//	intersectionPt[2]= tmp[2];
-
-	//	// Translate
-	//	intersectionPt[0]+= pThis->m_phCylinder->getLocationX ();
-	//	intersectionPt[1]+= pThis->m_phCylinder->getLocationY ();
-	//	intersectionPt[2]+= pThis->m_phCylinder->getLocationZ ();
-
-	//	char s[256];
-	//	sprintf ( s, "Intersect: %d\n", pThis  );
-	//	OutputDebugString ( s );
-
- //       return true;
- //   }
+	//OutputDebugString ( "No Intersect Sphere...\n" );
 
     return false;
 }
@@ -221,51 +224,53 @@ bool CHapticCylinder::intersectSegmentOutIn(
     const hduVector3Dd &endPt_LC,
     hduVector3Dd &rIntersectionPt_LC) const
 {
- //   hduVector3Dd p = startPt_LC;
- //   hduVector3Dd v = endPt_LC - startPt_LC;
+    //hduVector3Dd p = startPt_LC;
+    //hduVector3Dd v = endPt_LC - startPt_LC;
 
- //   // Solve the intersection implicitly using the quadratic formula.
- //   double a = v[0]*v[0] + v[1]*v[1];
- //   double b = 2 * ( v[1]*p[1] + v[0]*p[0] );
- //   double c = p[1]*p[1] + p[0]*p[0] - 1;
+    hduVector3Dd p = startPt_LC;
+    hduVector3Dd v = endPt_LC - startPt_LC;
 
- //   double disc = b*b - 4*a*c;
+    // Solve the intersection implicitly using the quadratic formula.
+    //double a = v[0]*v[0] + v[1]*v[1] + v[2]*v[2];
+    //double b = 2 * (p[0]*v[0] + p[1]*v[1] + p[2]*v[2]);
+    //double c = p[0]*p[0] + p[1]*p[1] + p[2]*p[2] - m_radius * m_radius;
 
- //   // The scale factor that must be applied to v so that p + nv is
- //   // on the sphere.
- //   double n;
- //   if(disc == 0.0)
- //   {
- //       n = (-b)/(2*a);
- //   }
- //   else if(disc > 0.0)
- //   {
- //       double posN = (-b + sqrt(disc))/(2*a);
- //       double negN = (-b - sqrt(disc))/(2*a);
- //       n = posN < negN ? posN : negN;
- //   }
- //   else
- //   {
- //       return false;
- //   }
+    // Solve the intersection implicitly using the quadratic formula.
+    double a = v[0]*v[0] + v[1]*v[1];
+    double b = 2 * ( v[1]*p[1] + v[0]*p[0] );
+    double c = p[1]*p[1] + p[0]*p[0] - m_radius * m_radius;
 
- //   // n greater than one means that the ray defined by the two points
- //   // intersects the sphere, but beyond the end point of the segment.
- //   // n less than zero means that the intersection is 'behind' the
- //   // start point.
- //   if(n > 1.0 || n < 0.0)
- //   {
- //       return false;
- //   }
+    double disc = b*b - 4*a*c;
 
-	//hduVector3Dd pointOnSurface= p + n*v;
+    // The scale factor that must be applied to v so that p + nv is
+    // on the sphere.
+    double n;
+    if(disc == 0.0)
+    {
+        n = (-b)/(2*a);
+    }
+    else if(disc > 0.0)
+    {
+        double posN = (-b + sqrt(disc))/(2*a);
+        double negN = (-b - sqrt(disc))/(2*a);
+        n = posN < negN ? posN : negN;
+    }
+    else
+    {
+        return false;
+    }
 
- //   rIntersectionPt_LC[0]= pointOnSurface[0];
- //   rIntersectionPt_LC[1]= pointOnSurface[1];
- //   rIntersectionPt_LC[2]= pointOnSurface[2];
+    // n greater than one means that the ray defined by the two points
+    // intersects the sphere, but beyond the end point of the segment.
+    // n less than zero means that the intersection is 'behind' the
+    // start point.
+    if(n > 1.0 || n < 0.0)
+    {
+        return false;
+    }
 
-//    return true;
-	return false;
+    rIntersectionPt_LC = p + n*v;
+    return true;
 }
 
 /******************************************************************************
@@ -276,7 +281,16 @@ bool CHapticCylinder::isInside(const hduVector3Dd &testPt) const
 {
 	hduVector3Dd xyTest ( testPt[0], testPt[1], 0 );
 
-	return xyTest.magnitude() < m_radius && abs(testPt[2]) < 0.5;
+	if ( xyTest.magnitude() < m_radius && abs(testPt[2]) < 0.5 )
+	{
+		OutputDebugString ( "Inside\n" );
+		return true;
+	}
+	else
+	{
+		OutputDebugString ( "Outside\n" );
+		return false;
+	}
 
     //return testPt.magnitude() < m_radius;
 }
