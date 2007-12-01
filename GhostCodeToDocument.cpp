@@ -13,6 +13,14 @@
 
 CGhostCodeToDocument::CGhostCodeToDocument(void)
 {
+	// Max nominal surface property parameters to use for conversion
+
+	// Stiffness
+	maxStiffness= 0.5; // Defualt for Omni
+
+	// Damping
+	maxDamping= 0.5;
+
 	// indicates an error in parsing the file
 	error= false;
 
@@ -31,6 +39,18 @@ CGhostCodeToDocument::CGhostCodeToDocument(void)
 
 CGhostCodeToDocument::~CGhostCodeToDocument(void)
 {
+}
+
+// Set OH nominal max stiffness to use in conversion of units of k
+void CGhostCodeToDocument::SetMaxStiffness ( float s )
+{
+	maxStiffness= s;
+}
+
+// Set OH nominal max damping to use in conversion of units of damping coeff.
+void CGhostCodeToDocument::SetMaxDamping ( float d )
+{
+	maxDamping= d;
 }
 
 // Extracts the scale component from the transformation matrix
@@ -1725,8 +1745,8 @@ void CGhostCodeToDocument::BuildDocument ( CString filename, CProtoHapticDoc* do
 			//// Set color of PH shape
 			//shape->setColour ( rgb[0], rgb[1], rgb[2] );
 
-			//// Set haptic properties of shape
-			//// ..............................
+			// Set haptic properties of shape
+			// ..............................
 
 			// Get haptic properties of AM shape
 			float stiffness= 0.6;
@@ -1734,14 +1754,24 @@ void CGhostCodeToDocument::BuildDocument ( CString filename, CProtoHapticDoc* do
 			float dynamicFriction= 0.5;
 			float damping= 0.0;
 
-			//GetShapeHaptics ( &stiffness, &dynamicFriction, &staticFriction, &damping,
-			//				   &identifiers.at ( i ), &inFile );
+			GetShapeHaptics ( &stiffness, &dynamicFriction, &staticFriction, &damping,
+							   &identifiers.at ( i ), &inFile );
 
-			//// Set haptic properties of PH shape
-			//shape->setStiffness ( stiffness );
-			//shape->setStaticFriction ( staticFriction );
-			//shape->setDynamicFriction ( dynamicFriction );
-			//shape->setDampening ( damping );
+			// Set haptic properties of PH shape
+			float ohStiffness= stiffness / maxStiffness;
+			float ohDamping= damping / maxDamping;
+
+			// Cap between 0..1
+			if ( ohStiffness > 1 ) ohStiffness= 1.0;
+			if ( ohDamping > 1 ) ohDamping= 1.0;
+			if ( ohStiffness < -1 ) ohStiffness= -1.0;
+			if ( ohDamping < -1 ) ohDamping= -1.0;
+			
+			shape->setStiffness ( ohStiffness );
+			shape->setDampening ( ohDamping );
+
+			shape->setStaticFriction ( 0 );//staticFriction );
+			shape->setDynamicFriction ( 0 );//dynamicFriction );
 		//}
 		//else
 		//{

@@ -647,6 +647,10 @@ void CProtoHapticApp::OnImportGhostcode()
 			ghostTranslator->SetRootSeparatorName ( preDlg.GetRootSepName () );
 		}
 
+		// Set nominal max surface properties values
+		ghostTranslator->SetMaxDamping ( preDlg.GetMaxDamping () );
+		ghostTranslator->SetMaxStiffness ( preDlg.GetMaxStiffness () );
+
 		// Do conversion, create document
 		ghostTranslator->BuildDocument ( fname, doc );
 		

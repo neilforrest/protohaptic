@@ -1,6 +1,9 @@
 // ProtoHaptic
 // ===========
-// Author: Neil Forrest, 2006// File: AppOptionsDlg.h// Classes: CAppOptionsDlg// Purpose: A dialog controlling global application options
+// Author: Neil Forrest, 2006
+// File: AppOptionsDlg.h
+// Classes: CAppOptionsDlg
+// Purpose: A dialog controlling global application options
 
 #if !defined(AFX_APPOPTIONSDLG_H__6157A9DA_3029_4DAD_8505_210A425F98F6__INCLUDED_)
 #define AFX_APPOPTIONSDLG_H__6157A9DA_3029_4DAD_8505_210A425F98F6__INCLUDED_
@@ -8,6 +11,7 @@
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
+#include "afxwin.h"
 
 // The Phantom Devices config dialog
 #include "PhantomsDlg.h"
@@ -35,6 +39,7 @@ public:
 	CSliderCtrl	m_editPointSize;
 	//}}AFX_DATA
 
+	float m_hapticOffsetX, m_hapticOffsetY, m_hapticOffsetZ;
 
 // Overrides
 	// ClassWizard generated virtual function overrides
@@ -65,6 +70,14 @@ protected:
 	virtual BOOL OnInitDialog();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+public:
+	CEdit m_hapticX;
+public:
+	CEdit m_hapticY;
+public:
+	CEdit m_hapticZ;
+public:
+	afx_msg void OnBnClickedHapticOffset();
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -5,6 +5,7 @@
 #include "ProtoHaptic.h"
 #include "AppOptionsDlg.h"
 #include "PhantomsDlg.h"
+#include "Parse.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -35,6 +36,9 @@ void CAppOptionsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SLIDER2, m_rotationGuess);
 	DDX_Control(pDX, IDC_SLIDER1, m_editPointSize);
 	//}}AFX_DATA_MAP
+	DDX_Control(pDX, IDC_EDIT3, m_hapticX);
+	DDX_Control(pDX, IDC_EDIT4, m_hapticY);
+	DDX_Control(pDX, IDC_EDIT5, m_hapticZ);
 }
 
 
@@ -54,6 +58,7 @@ BEGIN_MESSAGE_MAP(CAppOptionsDlg, CDialog)
 	ON_BN_CLICKED(IDC_CHECK4, OnSnapTo)
 	ON_BN_CLICKED(IDC_CHECK3, OnEditPoint)
 	//}}AFX_MSG_MAP
+	ON_BN_CLICKED(IDC_BUTTON2, &CAppOptionsDlg::OnBnClickedHapticOffset)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -225,4 +230,21 @@ BOOL CAppOptionsDlg::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
+}
+
+void CAppOptionsDlg::OnBnClickedHapticOffset()
+{
+	// TODO: Add your control notification handler code here
+	char str[256];
+	m_hapticX.GetWindowText ( str, 256 );
+
+	StringToFloat ( str, &m_hapticOffsetX );
+
+	m_hapticY.GetWindowText ( str, 256 );
+
+	StringToFloat ( str, &m_hapticOffsetY );
+
+	m_hapticZ.GetWindowText ( str, 256 );
+
+	StringToFloat ( str, &m_hapticOffsetZ );
 }

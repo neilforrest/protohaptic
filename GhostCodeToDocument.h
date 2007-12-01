@@ -38,6 +38,12 @@ public:
 	// Set root separator name (default= do not use separator)
 	void SetRootSeparatorName ( CString separator );
 
+	// Set OH nominal max stiffness to use in conversion of units of k
+	void SetMaxStiffness ( float s );
+
+	// Set OH nominal max damping to use in conversion of units of damping coeff.
+	void SetMaxDamping ( float d );
+
 protected:
 
 	// Defines different kinds of Ghost shapes shapes
@@ -138,6 +144,14 @@ protected:
 
 	// Transform the specified  PH shape by the specified transform
 	void TransformShape ( hduMatrix* transform, int i, std::ifstream* inFile );
+
+	// Max nominal surface property parameters to use for conversion
+
+	// Stiffness
+	float maxStiffness;
+
+	// Damping
+	float maxDamping;
 
 	// Table of variable names and values
 	std::vector<CString> varNames;
