@@ -144,6 +144,13 @@ void CCylinder::drawGLScene()
 			  m_colourGreen,
 			  m_colourBlue);
 
+	//if ( touching() )
+	//{
+	//	glColor3f(0,
+	//			  1,
+	//			  0);
+	//}
+
 	int stacks= ((CProtoHapticApp*)AfxGetApp())->getStacks();
 
 	gluCylinder(s, 0.5*m_ratio,0.5,1, stacks, stacks);

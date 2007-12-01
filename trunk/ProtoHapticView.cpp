@@ -539,6 +539,10 @@ void HLCALLBACK onButtonUp1(HLenum event, HLuint object,
 
 CProtoHapticView::CProtoHapticView()
 {
+	hapticOffset[0]= 0.0;
+	hapticOffset[1]= 0.0;
+	hapticOffset[2]= 0.0;
+
 	m_selectedShapes = new set<CShape*>();
 	m_selectedShapes1 = new set<CShape*>();
 	m_showToolTip= false;
@@ -937,6 +941,7 @@ int CProtoHapticView::InitHaptics(void)
 	hlEndFrame();
 
     hlHintb(HL_SHAPE_DYNAMIC_SURFACE_CHANGE, false);
+	hlEnable ( HL_HAPTIC_CAMERA_VIEW );
 
 	if(!InitFeelable(m_hHLRC,m_hHLRC_1))
 	{
@@ -1186,6 +1191,9 @@ void CProtoHapticView::DrawHapticScene(bool primary_context)
 {
 	glPushMatrix();
 	
+	// Haptic only transformations
+	glTranslatef ( hapticOffset[0], hapticOffset[1], hapticOffset[2] );
+
    hlBeginFrame();
 
    if(primary_context) {
@@ -1577,8 +1585,8 @@ void CProtoHapticView::OnTimer(UINT nIDEvent)
 	}
 //here!!
 	if(!m_hapticMouseOn) {
-		hmEnableMouse(HM_MOUSE_INSIDE_VIEWPORT);
-		hmEnableMouse(HM_MOUSE_OUTSIDE_VIEWPORT);
+		//hmEnableMouse(HM_MOUSE_INSIDE_VIEWPORT);
+		//hmEnableMouse(HM_MOUSE_OUTSIDE_VIEWPORT);
 	} else {
 		hmDisableMouse(HM_MOUSE_INSIDE_VIEWPORT);
 		hmDisableMouse(HM_MOUSE_OUTSIDE_VIEWPORT);
@@ -2727,6 +2735,10 @@ void CProtoHapticView::OnAppOptions()
 
 	d.setView(this);
 	d.DoModal();
+	
+	hapticOffset[0]= d.m_hapticOffsetX;
+	hapticOffset[1]= d.m_hapticOffsetY;
+	hapticOffset[2]= d.m_hapticOffsetZ;
 }
 
 void CProtoHapticView::OnUpdateEditAppoptions(CCmdUI* pCmdUI) 

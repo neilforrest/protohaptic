@@ -651,6 +651,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\Parse.cpp"
+				>
+			</File>
+			<File
 				RelativePath="PhantomsDlg.cpp"
 				>
 				<FileConfiguration
@@ -1259,6 +1263,10 @@
 			</File>
 			<File
 				RelativePath="Move.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Parse.h"
 				>
 			</File>
 			<File

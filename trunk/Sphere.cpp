@@ -84,6 +84,13 @@ void CSphere::drawGLScene()
 			  m_colourGreen,
 			  m_colourBlue);
 
+	//if ( touching() )
+	//{
+	//	glColor3f(0,
+	//			  1,
+	//			  0);
+	//}
+
 	int stacks= ((CProtoHapticApp*)AfxGetApp())->getStacks();
 
 	gluSphere(s, 0.5, stacks, stacks);

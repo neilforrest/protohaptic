@@ -13,6 +13,8 @@ public:
 	virtual ~CGHOSTPreImportDlg();
 
 	CString GetRootSepName ( );
+	float GetMaxStiffness ( );
+	float GetMaxDamping ( );
 
 // Dialog Data
 	enum { IDD = IDD_GHOST_PREIMPORT };
@@ -20,7 +22,8 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	CString m_rootSepName;
-
+	float maxStiffness;
+	float maxDamping;
 
 	DECLARE_MESSAGE_MAP()
 public:
@@ -33,4 +36,16 @@ public:
 	CButton m_useSeparatorCheck;
 public:
 	afx_msg void OnEnChangeEdit1();
+public:
+	afx_msg void OnEnChangeEdit3();
+public:
+	CEdit m_maxStiff;
+public:
+	CEdit m_maxDamp;
+protected:
+	virtual void OnOK();
+public:
+	CComboBox m_device;
+public:
+	afx_msg void OnCbnSelchangeDevice();
 };

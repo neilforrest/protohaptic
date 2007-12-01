@@ -74,6 +74,9 @@ protected: // create from serialization only
 
 // Attributes
 public:
+	// Tmp
+	float hapticOffset[3];
+
 	// OpenHaptics Contexts
 
 	// Phantom 0
