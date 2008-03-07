@@ -101,6 +101,12 @@ bool CProtoHapticDoc::IsDynamicSurfaceChangeEnabled ( )
 
 CProtoHapticDoc::~CProtoHapticDoc()
 {	
+	// Render an empty scene and syc, so that shape callbacks
+	// (which access shape data about to be deleted) are not called by rendering thread
+	// after data has been deleted by client thread
+	hlBeginFrame ();
+	hlEndFrame ();
+
 	clean();
 	//dWorldDestroy(m_worldID);
 	//dSpaceDestroy(m_spaceID);
@@ -364,6 +370,12 @@ BOOL CProtoHapticDoc::OnNewDocument()
 		((CProtoHapticView*)pView)->Play();
 	}
 
+	// Render an empty scene and syc, so that shape callbacks
+	// (which access shape data about to be deleted) are not called by rendering thread
+	// after data has been deleted by client thread
+	hlBeginFrame ();
+	hlEndFrame ();
+
 	clean(); //Destroy existing document
 
 	m_shapeCount= 0;
@@ -471,6 +483,12 @@ void CProtoHapticDoc::Serialize(CArchive& ar)
 			((CProtoHapticView*)pView)->Play();
 		}
 		
+		// Render an empty scene and syc, so that shape callbacks
+		// (which access shape data about to be deleted) are not called by rendering thread
+		// after data has been deleted by client thread
+		hlBeginFrame ();
+		hlEndFrame ();
+
 		clean(); //Destroy existing document
 
 		m_historyCount= 0;

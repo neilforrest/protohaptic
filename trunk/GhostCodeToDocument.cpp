@@ -1407,7 +1407,7 @@ void CGhostCodeToDocument::GetShapeTransformLine ( hduMatrix* scaleM, hduMatrix*
 				hduVector3Dd normVector ( rotateVector[0], rotateVector[1], rotateVector[2] );
 				normVector.normalize ();
 
-				*rotateM= hduMatrix::createRotation ( normVector[0], normVector[1], normVector[2], rotateRadians );
+				(*rotateM)= hduMatrix::createRotation ( normVector[0], normVector[1], normVector[2], rotateRadians );
 			}
 		}
 		else if ( operation == "setTranslate" )
@@ -1525,6 +1525,156 @@ void CGhostCodeToDocument::GetShapeTransform ( hduMatrix* scale, hduMatrix* rota
 		GetShapeTransformLine ( scale, rotate, translate, identifier, &line );
 
 	}
+}
+
+void CGhostCodeToDocument::ApplyTransform ( hduMatrix* transform, int i, std::ifstream* inFile )
+{
+	if ( shapes.at ( i )->getType () == SHAPE_COMPOSITE )
+	{
+		// Get members of shape
+		std::vector<CString> memberIdents;
+		GetMemberShapes ( &identifiers.at ( i ), 
+						  &memberIdents,
+						  inFile );
+
+		// For each member shape
+		for ( int j= 0; j < memberIdents.size (); j++ )
+		{
+			int index= -1;
+			if ( FindShapeIndex ( &memberIdents.at ( j ), &index ) )
+			{
+				// Recurse into subshape
+				hduMatrix combinedTransform= *transform;
+				combinedTransform.multLeft ( (transforms.at ( index )) );
+
+				//char s[256];
+
+				//for ( int i= 0; i < 4; i++ )
+				//{
+				//	for ( int j= 0; j < 4; j++ )
+				//	{
+				//		sprintf ( s, "%f, ", (*transform)[i][j] );
+				//		OutputDebugString ( s );
+				//	}
+				//}
+				//OutputDebugString ( "\n" );
+				//MessageBox ( 0, "Here is this objects transform...", "", MB_OK );
+
+
+				//for ( int i= 0; i < 4; i++ )
+				//{
+				//	for ( int j= 0; j < 4; j++ )
+				//	{
+				//		sprintf ( s, "%f, ", ((transforms.at ( index )))[i][j] );
+				//		OutputDebugString ( s );
+				//	}
+				//}
+				//OutputDebugString ( "\n" );
+				//MessageBox ( 0, "Here is the childs transform...", "", MB_OK );
+
+				//for ( int i= 0; i < 4; i++ )
+				//{
+				//	for ( int j= 0; j < 4; j++ )
+				//	{
+				//		sprintf ( s, "%f, ", (combinedTransform)[i][j] );
+				//		OutputDebugString ( s );
+				//	}
+				//}
+				//OutputDebugString ( "\n" );
+				//MessageBox ( 0, "Here is the final transform...", "", MB_OK );
+
+				ApplyTransform ( &combinedTransform, index, inFile );
+			}
+			else
+			{
+				errorText.AppendFormat ( "Warning: Positioning shape: Cannot find shape \"%s\".", memberIdents.at ( j ) );
+				error= true;
+			}
+		}
+
+	}
+	else
+	{
+		TransformAtomicPHShape ( transform, i, inFile );
+	}
+}
+
+// Apply the specified transformation to the specified atomic PH shape
+void CGhostCodeToDocument::TransformAtomicPHShape ( hduMatrix* transform, int i, std::ifstream* inFile )
+{
+	CShape* shape= shapes.at ( i );
+
+			// Apply the shapes transforms
+			// ...........................
+
+			// Set scaling
+			float scale[3]= { 1.0, 1.0, 1.0 };
+			GetScaleFromMatrix ( transform, scale );
+
+			// Default absolute dimentions of shapes
+			float radius= 1;
+			float x= 1, y= 1, z= 1;
+
+			// Set scale of PH shape
+			switch ( types.at ( i ) )
+			{
+			case gstCube:
+				// Account for box lengths
+				GetCubeDims ( &x, &y, &z, &identifiers.at(i), inFile );
+
+				shape->setSize ( scale[0]*x, scale[1]*y, scale[2]*z );
+
+				break;
+			case gstSphere:
+
+				// Account for sphere radius
+				GetSphereRadius ( &radius, &identifiers.at(i), inFile );
+
+				shape->setSize ( scale[0]*radius*2.0f, scale[1]*radius*2.0f, scale[2]*radius*2.0f );
+				break;
+			case gstCylinder:
+
+				// Account for cylinder radius
+				GetCylinderDims ( &radius, &y, &identifiers.at(i), inFile );
+
+				shape->setSize ( scale[0]*radius*2.0f, scale[2]*radius*2.0f, scale[1]*y );
+				break;
+			}
+
+			// Set rotation
+			hduMatrix rotation;
+
+			GetRotationFromMatrix( transform, &rotation );
+
+			// In the case of a cylinder do a 90 deg rotation about x first
+			if ( types.at ( i ) == gstCylinder )
+			{
+				rotation.multLeft ( hduMatrix::createRotation ( 1, 0, 0, M_PI*0.5 ) );
+			}
+
+			// Convert to float [16] array
+			float rotationArray[16]=
+			{
+				(float)rotation[0][0], (float)rotation[0][1], (float)rotation[0][2], (float)rotation[0][3],
+				(float)rotation[1][0], (float)rotation[1][1], (float)rotation[1][2], (float)rotation[1][3],
+				(float)rotation[2][0], (float)rotation[2][1], (float)rotation[2][2], (float)rotation[2][3],
+				(float)rotation[3][0], (float)rotation[3][1], (float)rotation[3][2], (float)rotation[3][3]
+			};
+
+			// Set the rotation
+			shape->setRotation ( rotationArray );
+
+			// Set translation
+			float translate[3];
+
+			// Extract translation component from matrix
+			GetTranslationFromMatrix ( transform, translate );
+
+			// Set the position of the PH shape
+			shape->setLocation ( translate[0],
+								 translate[1],
+								 translate[2] );
+
 }
 
 // Reads the code in the specified file and adds appropriate objects to the
@@ -1662,121 +1812,33 @@ void CGhostCodeToDocument::BuildDocument ( CString filename, CProtoHapticDoc* do
 
 		shape->SetName ( name );
 
-		//if ( shape->getType () != SHAPE_COMPOSITE )
-		//{
-			// Apply the shapes transforms
-			// ...........................
+		// Set haptic properties of shape
+		// ..............................
 
-			// Set scaling
-			float scale[3]= { 1.0, 1.0, 1.0 };
-			//GetScaleFromMatrix ( &transforms.at(i), scale );
+		// Get haptic properties of AM shape
+		float stiffness= 0.6;
+		float staticFriction= 0.1;
+		float dynamicFriction= 0.5;
+		float damping= 0.0;
 
-			// Default absolute dimentions of shapes
-			float radius= 1;
-			float x= 1, y= 1, z= 1;
+		GetShapeHaptics ( &stiffness, &dynamicFriction, &staticFriction, &damping,
+						   &identifiers.at ( i ), &inFile );
 
-			// Set scale of PH shape
-			switch ( types.at ( i ) )
-			{
-			case gstCube:
-				// Account for box lengths
-				GetCubeDims ( &x, &y, &z, &identifiers.at(i), &inFile );
+		// Set haptic properties of PH shape
+		float ohStiffness= stiffness / maxStiffness;
+		float ohDamping= damping / maxDamping;
 
-				shape->setSize ( scale[0]*x, scale[1]*y, scale[2]*z );
+		// Cap between 0..1
+		if ( ohStiffness > 1 ) ohStiffness= 1.0;
+		if ( ohDamping > 1 ) ohDamping= 1.0;
+		if ( ohStiffness < -1 ) ohStiffness= -1.0;
+		if ( ohDamping < -1 ) ohDamping= -1.0;
+		
+		shape->setStiffness ( ohStiffness );
+		shape->setDampening ( ohDamping );
 
-				break;
-			case gstSphere:
-
-				// Account for sphere radius
-				GetSphereRadius ( &radius, &identifiers.at(i), &inFile );
-
-				shape->setSize ( scale[0]*radius*2.0f, scale[1]*radius*2.0f, scale[2]*radius*2.0f );
-				break;
-			case gstCylinder:
-
-				// Account for cylinder radius
-				GetCylinderDims ( &radius, &y, &identifiers.at(i), &inFile );
-
-				shape->setSize ( scale[0]*radius*2.0f, scale[2]*radius*2.0f, scale[1]*y );
-				break;
-			}
-
-			// Set rotation
-			hduMatrix rotation;
-
-			//GetRotationFromMatrix( &transforms.at(i), &rotation );
-
-			// In the case of a cylinder do a 90 deg rotation about x first
-			if ( types.at ( i ) == gstCylinder )
-			{
-				rotation.multLeft ( hduMatrix::createRotation ( 1, 0, 0, M_PI*0.5 ) );
-			}
-
-			// Convert to float [16] array
-			float rotationArray[16]=
-			{
-				(float)rotation[0][0], (float)rotation[0][1], (float)rotation[0][2], (float)rotation[0][3],
-				(float)rotation[1][0], (float)rotation[1][1], (float)rotation[1][2], (float)rotation[1][3],
-				(float)rotation[2][0], (float)rotation[2][1], (float)rotation[2][2], (float)rotation[2][3],
-				(float)rotation[3][0], (float)rotation[3][1], (float)rotation[3][2], (float)rotation[3][3]
-			};
-
-			// Set the rotation
-			shape->setRotation ( rotationArray );
-
-			//// Set translation
-			//float translate[3];
-
-			//// Extract translation component from matrix
-			//GetTranslationFromMatrix ( &transforms.at(i), translate );
-
-			//// Set the position of the PH shape
-			//shape->setLocation ( translate[0],
-			//					 translate[1],
-			//					 translate[2] );
-
-			//// Set visual properties of shape
-			//// ..............................
-
-			//// Get color of AM shape
-			//float rgb[3];
-			//GetShapeColor ( rgb, &identifiers.at ( i ), &inFile );
-
-			//// Set color of PH shape
-			//shape->setColour ( rgb[0], rgb[1], rgb[2] );
-
-			// Set haptic properties of shape
-			// ..............................
-
-			// Get haptic properties of AM shape
-			float stiffness= 0.6;
-			float staticFriction= 0.1;
-			float dynamicFriction= 0.5;
-			float damping= 0.0;
-
-			GetShapeHaptics ( &stiffness, &dynamicFriction, &staticFriction, &damping,
-							   &identifiers.at ( i ), &inFile );
-
-			// Set haptic properties of PH shape
-			float ohStiffness= stiffness / maxStiffness;
-			float ohDamping= damping / maxDamping;
-
-			// Cap between 0..1
-			if ( ohStiffness > 1 ) ohStiffness= 1.0;
-			if ( ohDamping > 1 ) ohDamping= 1.0;
-			if ( ohStiffness < -1 ) ohStiffness= -1.0;
-			if ( ohDamping < -1 ) ohDamping= -1.0;
-			
-			shape->setStiffness ( ohStiffness );
-			shape->setDampening ( ohDamping );
-
-			shape->setStaticFriction ( 0 );//staticFriction );
-			shape->setDynamicFriction ( 0 );//dynamicFriction );
-		//}
-		//else
-		//{
-		//	
-		//}
+		shape->setStaticFriction ( 0 );//staticFriction );
+		shape->setDynamicFriction ( 0 );//dynamicFriction );
 
 		// If shape should be added to the model (not using root sep) (comps added later)
 		if ( m_rootSeparator == "" && shape->getType() != SHAPE_COMPOSITE )
@@ -1789,14 +1851,14 @@ void CGhostCodeToDocument::BuildDocument ( CString filename, CProtoHapticDoc* do
 		// Above
 		// Save a ptr to the shape for later
 		shapes.push_back ( shape );
-		
 	}
 
 	// Position shapes (start with root object and work down
 	int rootIndex;
 	if ( FindShapeIndex ( &m_rootSeparator, &rootIndex ) )
 	{
-		PositionShape ( rootIndex, &inFile );
+		//PositionShape ( rootIndex, &inFile );
+		ApplyTransform ( &(transforms.at ( rootIndex )), rootIndex, &inFile );
 	}
 	else
 	{

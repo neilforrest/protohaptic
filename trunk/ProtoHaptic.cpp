@@ -63,6 +63,8 @@ BEGIN_MESSAGE_MAP(CProtoHapticApp, CWinApp)
 	ON_COMMAND(ID_FILE_OPEN, CWinApp::OnFileOpen )
 	ON_COMMAND(ID_IMPORT_ABSTRACTMODELCODE, CProtoHapticApp::OnImportAbstractmodelcode)
 	ON_COMMAND(ID_IMPORT_GHOSTCODE, &CProtoHapticApp::OnImportGhostcode)
+	ON_COMMAND(ID_FILE_IMPORT_AM, &CProtoHapticApp::OnFileImportAm)
+	ON_COMMAND(ID_FILE_IMPORT_GHOST, &CProtoHapticApp::OnFileImportGhost)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -692,4 +694,16 @@ void CProtoHapticApp::OnImportGhostcode()
 
 	// Delete dialog
 	delete dlg;
+}
+
+void CProtoHapticApp::OnFileImportAm()
+{
+	// TODO: Add your command handler code here
+	OnImportAbstractmodelcode ();
+}
+
+void CProtoHapticApp::OnFileImportGhost()
+{
+	// TODO: Add your command handler code here
+	OnImportGhostcode();
 }

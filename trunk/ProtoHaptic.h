@@ -215,6 +215,10 @@ public:
 	afx_msg void OnImportAbstractmodelcode();
 public:
 	afx_msg void OnImportGhostcode();
+public:
+	afx_msg void OnFileImportAm();
+public:
+	afx_msg void OnFileImportGhost();
 };
 
 
