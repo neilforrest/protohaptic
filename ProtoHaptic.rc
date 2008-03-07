@@ -74,7 +74,7 @@ BEGIN
         POPUP "Import"
         BEGIN
             MENUITEM "AbstractModel Code\tCtrl+I",  ID_IMPORT_ABSTRACTMODELCODE
-            MENUITEM "GHOST Code",                  ID_IMPORT_GHOSTCODE
+            MENUITEM "GHOST Code\tCtrl+G",          ID_IMPORT_GHOSTCODE
         END
         MENUITEM SEPARATOR
         MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE
@@ -137,30 +137,32 @@ END
 
 IDR_MAINFRAME ACCELERATORS 
 BEGIN
-    "B",            ID_ACCEL_CUBE,          VIRTKEY, SHIFT, NOINVERT
-    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
-    "C",            ID_ACCEL_CYLINDER,      VIRTKEY, SHIFT, NOINVERT
     "C",            ID_ACCEL_CENTER,        VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "B",            ID_ACCEL_CUBE,          VIRTKEY, SHIFT, NOINVERT
+    "C",            ID_ACCEL_CYLINDER,      VIRTKEY, SHIFT, NOINVERT
+    VK_DELETE,      ID_ACCEL_DELETE,        VIRTKEY, NOINVERT
     "E",            ID_ACCEL_EDITMODE,      VIRTKEY, SHIFT, CONTROL, NOINVERT
     "G",            ID_ACCEL_GROUP,         VIRTKEY, SHIFT, NOINVERT
     "L",            ID_ACCEL_SELECT,        VIRTKEY, SHIFT, NOINVERT
-    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
-    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
     "S",            ID_ACCEL_SHAPEPROPERTIES, VIRTKEY, NOINVERT
-    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
     "S",            ID_ACCEL_SPHERE,        VIRTKEY, SHIFT, NOINVERT
     "U",            ID_ACCEL_UNGROUP,       VIRTKEY, SHIFT, NOINVERT
-    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
     "V",            ID_ACCEL_VIEWMODE,      VIRTKEY, SHIFT, CONTROL, NOINVERT
-    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
-    VK_DELETE,      ID_ACCEL_DELETE,        VIRTKEY, NOINVERT
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
     VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
     VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
     VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
-    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
-    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
-    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
-    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+    "I",            ID_FILE_IMPORT_AM,      VIRTKEY, CONTROL, NOINVERT
+    "G",            ID_FILE_IMPORT_GHOST,   VIRTKEY, CONTROL, NOINVERT
 END
 
 

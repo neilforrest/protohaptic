@@ -145,6 +145,11 @@ protected:
 	// Transform the specified  PH shape by the specified transform
 	void TransformShape ( hduMatrix* transform, int i, std::ifstream* inFile );
 
+	// Apply the specified transformation to the specified atomic PH shape
+	void TransformAtomicPHShape ( hduMatrix* transform, int i, std::ifstream* inFile );
+
+	void ApplyTransform ( hduMatrix* transform, int i, std::ifstream* inFile );
+
 	// Max nominal surface property parameters to use for conversion
 
 	// Stiffness
