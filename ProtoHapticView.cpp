@@ -1189,6 +1189,13 @@ void CProtoHapticView::DrawGLScene(bool swap_buffers)
 
 void CProtoHapticView::DrawHapticScene(bool primary_context)
 {
+	if ( m_flyToShape != NULL ) 
+	{
+		hlBeginFrame ();
+		hlEndFrame ();
+		return;
+	}
+
 	glPushMatrix();
 	
 	// Haptic only transformations
@@ -1509,7 +1516,7 @@ void CProtoHapticView::OnTimer(UINT nIDEvent)
 			m_flyToStep++;
 			
 		} else {
-			m_flyToShape= NULL;
+			m_flyToShape= NULL;		// Reached destination
 			if(m_flyToIndex!=-1)
 				m_selectedShapes->insert(GetDocument()->GetShape(m_flyToIndex));
 		}

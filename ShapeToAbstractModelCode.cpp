@@ -102,7 +102,9 @@ void CShapeToAbstractModelCode::GetInitCode ( CShape* shape, CString *string, CS
 	{
 		*string+= "\r\n// Add object to model";
 	
-		string->AppendFormat ( "\r\nAddModelItem ( %s );", 
+		//string->AppendFormat ( "\r\nAddModelItem ( %s );",	// Old Syntax
+		//					  *identifier );
+		string->AppendFormat ( "\r\nAddShape ( %s );",			// New Syntax
 							  *identifier );
 	}
 }
