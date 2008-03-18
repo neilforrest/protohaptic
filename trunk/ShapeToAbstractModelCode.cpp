@@ -188,6 +188,8 @@ void CShapeToAbstractModelCode::GetInitCodeTorus ( CTorus* torus, CString *strin
 
 	// Set outer radius
 	string->AppendFormat ( "\r\n%s->SetRadius ( %f );", *identifier, torus->getRadius ( ) );
+	string->AppendFormat ( "\r\n%s->SetRadiusMajor ( %f );", *identifier, torus->getRadiusMajor ( ) );
+	string->AppendFormat ( "\r\n%s->SetRadiusMinor ( %f );", *identifier, torus->getRadiusMinor ( ) );
 
 	// Add code to set the shapes transform
 	GetTransform ( torus, string, identifier, compositeMember );
