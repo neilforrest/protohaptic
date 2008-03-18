@@ -51,7 +51,8 @@ protected:
 	  gstSphere,
 	  gstCube,
 	  gstCylinder,
-	  gstSeparator
+	  gstSeparator,
+	  gstTorus
 	};
 
 	// Extracts the scale component from the transformation matrix
@@ -90,6 +91,10 @@ protected:
 
 	// Get the transform associated with the given shape identifier in the line of code specified
 	void GetShapeTransformLine ( hduMatrix* scaleM, hduMatrix* rotateM, hduMatrix* translateM, CString* identifier, CString* line );
+
+	// Get the radii of the torus
+	void GetTorusRadii ( float* radiusMajor, float* radiusMinor, CString* identifier, std::ifstream* inFile );
+	void GetTorusRadiiLine ( float* radiusMajor, float* radiusMinor, CString* identifier, CString* line );
 
 	// Get the radius of the sphere
 	void GetSphereRadius ( float* radius, CString* identifier, std::ifstream* inFile );

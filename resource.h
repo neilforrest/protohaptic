@@ -24,7 +24,6 @@
 #define IDD_VARVALUE                    149
 #define IDD_AMPOSTIMPORT                150
 #define IDD_DIALOG6                     151
-#define IDD_DIALOG7                     152
 #define IDD_GHOST_PREIMPORT             152
 #define IDC_TAB1                        1012
 #define IDC_SLIDER1                     1014
@@ -129,14 +128,16 @@
 #define ID_TOOL_TORUS                   32829
 #define ID_TOOL_GROUPALL                32830
 #define ID_IMPORT_GHOSTCODE             32831
+#define ID_FILE_IMPORT_AM               32832
+#define ID_FILE_IMPORT_GHOST            32833
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        153
-#define _APS_NEXT_COMMAND_VALUE         32832
+#define _APS_NEXT_RESOURCE_VALUE        154
+#define _APS_NEXT_COMMAND_VALUE         32835
 #define _APS_NEXT_CONTROL_VALUE         1054
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

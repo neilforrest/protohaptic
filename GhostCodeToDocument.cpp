@@ -194,6 +194,106 @@ void CGhostCodeToDocument::GetLogicalLine ( CString* line, std::ifstream* inFile
 	*line+= l;
 }
 
+// Get the radii of the torus
+void CGhostCodeToDocument::GetTorusRadii ( float* radiusMajor, float* radiusMinor, CString* identifier, std::ifstream* inFile )
+{
+	// Go to start of file
+	inFile->clear ( );
+	inFile->seekg ( 0 );
+	lineNumber= 0;	// Currently processing this line
+
+	// Look at each line
+
+	// Get first line
+	CString line;
+	GetLogicalLine ( &line, inFile );
+
+	// Process first line
+	GetTorusRadiiLine ( radiusMajor, radiusMinor, identifier, &line );
+
+	// While more data
+	while ( inFile->good () /* && !error */ )
+	{
+		// Get next line
+		GetLogicalLine ( &line, inFile );
+
+		// Process line 
+		GetTorusRadiiLine ( radiusMajor, radiusMinor, identifier, &line );
+	}
+}
+
+void CGhostCodeToDocument::GetTorusRadiiLine ( float* radiusMajor, float* radiusMinor, CString* identifier, CString* line )
+{
+	CString operation;						// Name of operation on object
+	std::vector<CString> parameters;		// list of parameters as strings
+
+	// Get details of operation on identifier (and process if successfull)
+	if ( GetOperation ( identifier, line, &operation, &parameters ) )
+	{
+		// error, wrong number of parameters for function
+		bool parameterError= false;
+
+		// The operation on the composite is add shape
+		if ( operation == "setMajorRadius" )
+		{
+			// Check number of arguments
+			if ( parameters.size () == 1 )
+			{
+				// If parameter is a literal float		// Paramter *3
+				if ( IsFloatLiteral ( &parameters.at(0) ) )
+				{
+					// convert it to float
+					sscanf ( parameters.at (0), "%f", radiusMajor );
+				}
+				else
+				{
+					// Try to evaluate expression
+					if ( !EvaluateFloatExpression ( &parameters.at (0), radiusMajor ) )
+					{
+						// error, don't understand parameter
+						parameterError= true;
+					}
+				}
+			}
+			else
+			{
+				// Error, wrong number of parameters for function
+				parameterError= true;
+			}
+		}
+		else if ( operation == "setMinorRadius" )
+		{
+			// Check number of arguments
+			if ( parameters.size () == 1 )
+			{
+				// If parameter is a literal float		// Paramter *3
+				if ( IsFloatLiteral ( &parameters.at(0) ) )
+				{
+					// convert it to float
+					sscanf ( parameters.at (0), "%f", radiusMinor );
+				}
+				else
+				{
+					// Try to evaluate expression
+					if ( !EvaluateFloatExpression ( &parameters.at (0), radiusMinor ) )
+					{
+						// error, don't understand parameter
+						parameterError= true;
+					}
+				}
+			}
+			else
+			{
+				// Error, wrong number of parameters for function
+				parameterError= true;
+			}
+		}
+
+		// Check for errors
+	}
+	// else, identifier not found
+}
+
 // Get the radius of the sphere
 void CGhostCodeToDocument::GetSphereRadius ( float* radius, CString* identifier, std::ifstream* inFile )
 {
@@ -470,6 +570,9 @@ bool CGhostCodeToDocument::GetShapeConstruction ( CString* line, CString* identi
 	// Look for new separator
 	int foundSeparator= tmp.Find ( "newgstSeparator" );
 
+	// Look for new torus
+	int foundTorus= tmp.Find ( "newgstTorus" );
+
 	if ( foundSphere != -1 )
 	{
 		// Get the name of the shape
@@ -513,6 +616,18 @@ bool CGhostCodeToDocument::GetShapeConstruction ( CString* line, CString* identi
 		
 		// Save the type of shape
 		*type= gstSeparator;
+
+		// Add shape to list
+		return true;
+	}
+
+	if ( foundTorus != -1 )
+	{
+		// Get the name of the shape
+		GetShapeIdentifier ( line, identifier, foundTorus );
+		
+		// Save the type of shape
+		*type= gstTorus;
 
 		// Add shape to list
 		return true;
@@ -1614,6 +1729,7 @@ void CGhostCodeToDocument::TransformAtomicPHShape ( hduMatrix* transform, int i,
 			// Default absolute dimentions of shapes
 			float radius= 1;
 			float x= 1, y= 1, z= 1;
+			float radiusMajor= 1, radiusMinor= 1; // Torus only
 
 			// Set scale of PH shape
 			switch ( types.at ( i ) )
@@ -1639,6 +1755,16 @@ void CGhostCodeToDocument::TransformAtomicPHShape ( hduMatrix* transform, int i,
 
 				shape->setSize ( scale[0]*radius*2.0f, scale[2]*radius*2.0f, scale[1]*y );
 				break;
+			case gstTorus:
+
+				// Account for radii of the torus
+				GetTorusRadii ( &radiusMajor, &radiusMinor, &identifiers.at(i), inFile );
+
+				shape->setSize ( scale[0], scale[2], scale[1] );
+				((CTorus*)shape)->setRadiusMajor ( radiusMajor );
+				((CTorus*)shape)->setRadiusMinor ( radiusMinor );
+
+				break;
 			}
 
 			// Set rotation
@@ -1651,6 +1777,13 @@ void CGhostCodeToDocument::TransformAtomicPHShape ( hduMatrix* transform, int i,
 			{
 				rotation.multLeft ( hduMatrix::createRotation ( 1, 0, 0, M_PI*0.5 ) );
 			}
+			// Ghost torus is flat on the floor, PH / Glut torus is flat in x y plane
+			// So rotate PH torus 90, about x- to put it on the floor, then apply ghost transformations
+			if ( types.at ( i ) == gstTorus )
+			{
+				rotation.multLeft ( hduMatrix::createRotation ( 1, 0, 0, M_PI*0.5 ) );
+			}
+
 
 			// Convert to float [16] array
 			float rotationArray[16]=
@@ -1800,6 +1933,9 @@ void CGhostCodeToDocument::BuildDocument ( CString filename, CProtoHapticDoc* do
 			break;
 		case gstCylinder:
 			shape= new CCylinder ( 1, 1, 1 );
+			break;
+		case gstTorus:
+			shape= new CTorus ( );
 			break;
 		case gstSeparator:
 			shape= new CComposite ( );

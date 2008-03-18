@@ -7,16 +7,42 @@
 CTorus::CTorus(void)
 {
 	// Set Default parameters
-	m_radius= 0.2;
+	m_radiusMajor= 0.5;
+	m_radiusMinor= 0.5;
+
 	m_drawnFraction= 1.0; //i.e. Complete
 
-	m_sizeX= 1.0; m_sizeY= 1.0; m_sizeZ= m_radius*2.0;
+	m_sizeX= 1.0; m_sizeY= 1.0; m_sizeZ= 1.0;
 	setLocation(0.0,0.0,0.0);
 	m_control= new CTorusControl(this);
 }
 
 CTorus::~CTorus(void)
 {
+}
+
+/** Get radius of outer loop spine */
+float CTorus::getRadiusMajor ( )
+{
+	return m_radiusMajor;
+}
+
+/** Set radius of outer loop spine  */
+void CTorus::setRadiusMajor ( float r )
+{
+	m_radiusMajor= r;
+}
+
+/** Get radius of outer loop */
+float CTorus::getRadiusMinor ( )
+{
+	return m_radiusMinor;
+}
+
+/** Set radius of outer loop */
+void CTorus::setRadiusMinor ( float r )
+{
+	m_radiusMinor= r;
 }
 
 CShape* CTorus::clone()
@@ -44,7 +70,8 @@ CShape* CTorus::clone()
 	cloned->m_staticFString= m_staticFString;
 	cloned->m_dynamicFString= m_dynamicFString;
 
-	cloned->m_radius= m_radius;
+	cloned->m_radiusMajor= m_radiusMajor;
+	cloned->m_radiusMinor= m_radiusMinor;
 
 	cloned->m_name= m_name;
 
@@ -54,13 +81,13 @@ CShape* CTorus::clone()
 /** Get radius of outer loop */
 float CTorus::getRadius ( )
 {
-	return m_radius;
+	return 0.0;
 }
 
 /** Set radius of outer loop */
 void CTorus::setRadius ( float r )
 {
-	m_radius= r;
+	//m_radius= r;
 }
 
 /* Some <math.h> files do not define M_PI... */
@@ -123,7 +150,7 @@ void CTorus::drawGLScene()
 
 	glMultMatrixf(m_rotation);
 	
-	glScalef(m_sizeX, m_sizeY, m_sizeZ * (1.0f/(m_radius*2.0)) );
+	glScalef(m_sizeX, m_sizeY, m_sizeZ );
 
 	glColor3f(m_colourRed,
 			  m_colourGreen,
@@ -131,7 +158,7 @@ void CTorus::drawGLScene()
 
 	int stacks= ((CProtoHapticApp*)AfxGetApp())->getStacks();
 
-	doughnut ( m_radius, 0.5-m_radius, stacks, stacks, m_drawnFraction );
+	doughnut ( m_radiusMinor, m_radiusMajor, stacks, stacks, m_drawnFraction );
 
 	glPopMatrix();
 }
@@ -154,7 +181,7 @@ int CTorus::getType() { return SHAPE_TORUS; }
 
 CString CTorus::drawGLCode()
 {
-	CString s= "// !!Sphere Code Not Implimented!! \r\n";
+	CString s= "// !!Torus Code Not Implimented!! \r\n";
 
 	return s;
 }
@@ -164,9 +191,15 @@ void CTorus::Serialize(CArchive& ar)
 	CShape::Serialize(ar);
 
 	if(ar.IsStoring())
-		ar << m_radius;
+	{
+		ar << m_radiusMajor;
+		ar << m_radiusMinor;
+	}
 	else
-		ar >> m_radius;
+	{
+		ar >> m_radiusMajor;
+		ar >> m_radiusMinor;
+	}
 }
 
 /** Get drawn fraction of outer loop */
