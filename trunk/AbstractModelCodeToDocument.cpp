@@ -1279,7 +1279,7 @@ bool CAbstractModelCodeToDocument::IsAddedToModelLine ( CString* identifier, CSt
 	tmp.Replace ( " ", "" );
 	tmp.Replace ( "	", "" );
 
-	return ( tmp.Find ( "AddModelItem(" + *identifier + ")" ) != -1 );
+	return ( tmp.Find ( "AddShape(" + *identifier + ")" ) == 0 );
 }
 
 // Gets a list of sub-shape identifiers for the specified composite shape identifier, in file inFile
