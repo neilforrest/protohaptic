@@ -13,6 +13,8 @@
 #include "float.h"
 #include "UsefullFunctions.h"
 
+#include "Torus.h"
+
 #include <mmsystem.h>
 
 #ifdef _DEBUG
@@ -101,6 +103,10 @@ CResize::CResize(CShape *shape, HLdouble x, HLdouble y, HLdouble z,CProtoHapticD
 	m_fixedAxisX= false;
 	m_fixedAxisY= false;
 	m_fixedAxisZ= false;	// Defaults
+
+	m_resizeBoxDims[0]= 1.0;
+	m_resizeBoxDims[1]= 1.0;
+	m_resizeBoxDims[2]= 1.0;
 }
 
 // The axis specified will be fixed. E.g. Fix one axis for a 2d planar shape
@@ -110,6 +116,15 @@ void CResize::SetAxisFixed ( bool x, bool y, bool z )
 	m_fixedAxisX= x;
 	m_fixedAxisY= y;
 	m_fixedAxisZ= z;
+}
+
+/** Set the size of the box on whose corners the resize edit-points are placed.
+    In object coordinates. The default is a unit cube. The box is centred on the origin of object space */
+void CResize::setResizeBoxDimentions ( float x, float y, float z )
+{
+	m_resizeBoxDims[0]= x;
+	m_resizeBoxDims[1]= y;
+	m_resizeBoxDims[2]= z;
 }
 
 int CResize::getType() { return TRANSFORM_RESIZE; }
@@ -335,13 +350,20 @@ void CResize::setProxyPos(HLdouble x, HLdouble y, HLdouble z)
 		}
 	}
 
-	double   pV[3]= { newPos[0]-m_proxyStartPos[0],
-					  newPos[1]-m_proxyStartPos[1],
-					  newPos[2]-m_proxyStartPos[2] };
+	// Resize gesture dragging vector
+	double   pV[3]= { (newPos[0]-m_proxyStartPos[0]),
+					  (newPos[1]-m_proxyStartPos[1]),
+					  (newPos[2]-m_proxyStartPos[2]) };
 
+	// dragging vector transformed to object space
 	double   rV[3]= { pV[0]*A[0][0] + pV[1]*A[0][1]+ pV[2]*A[0][2],
 		              pV[0]*A[1][0] + pV[1]*A[1][1]+ pV[2]*A[1][2],
 					  pV[0]*A[2][0] + pV[1]*A[2][1]+ pV[2]*A[2][2] };
+
+	// Scale the dragging vector by inverse of the scale of the resize box
+	rV[0]/= m_resizeBoxDims[0];
+	rV[1]/= m_resizeBoxDims[1];
+	rV[2]/= m_resizeBoxDims[2];
 
 	double sizeX= signX*rV[0];
 	double sizeY= signY*rV[1];
@@ -388,14 +410,12 @@ void CResize::setProxyPos(HLdouble x, HLdouble y, HLdouble z)
 	if(m_startSizeY+sizeY<0) sizeY= -m_startSizeY;
 	if(m_startSizeZ+sizeZ<0) sizeZ= -m_startSizeZ;
 
-//	double   sV[3]= { offsetX*sizeX*B[0][0] + offsetY*sizeY*B[0][1]+ offsetZ*sizeZ*B[0][2],
-//		              offsetX*sizeX*B[1][0] + offsetY*sizeY*B[1][1]+ offsetZ*sizeZ*B[1][2],
-//					  offsetX*sizeX*B[2][0] + offsetY*sizeY*B[2][1]+ offsetZ*sizeZ*B[2][2] };
-
-	double   sV[3]= { (m_fixedAxisX ? 0 : signX*sizeX/2.0*B[0][0] ) + (m_fixedAxisY ? 0 : signY*sizeY/2.0*B[0][1] ) + (m_fixedAxisZ ? 0 : signZ*sizeZ/2.0*B[0][2] ),
-		              (m_fixedAxisX ? 0 : signX*sizeX/2.0*B[1][0] ) + (m_fixedAxisY ? 0 : signY*sizeY/2.0*B[1][1] ) + (m_fixedAxisZ ? 0 : signZ*sizeZ/2.0*B[1][2] ),
-					  (m_fixedAxisX ? 0 : signX*sizeX/2.0*B[2][0] ) + (m_fixedAxisY ? 0 : signY*sizeY/2.0*B[2][1] ) + (m_fixedAxisZ ? 0 : signZ*sizeZ/2.0*B[2][2] ) };
-
+	// Translation required to anchor opposing corner
+	// Scale size by resize box dims before transforming back to model coords
+	double   sV[3]= { (m_fixedAxisX ? 0 : signX*(sizeX*m_resizeBoxDims[0])/2.0*B[0][0] ) + (m_fixedAxisY ? 0 : signY*(sizeY*m_resizeBoxDims[1])/2.0*B[0][1] ) + (m_fixedAxisZ ? 0 : signZ*(sizeZ*m_resizeBoxDims[2])/2.0*B[0][2] ),
+		              (m_fixedAxisX ? 0 : signX*(sizeX*m_resizeBoxDims[0])/2.0*B[1][0] ) + (m_fixedAxisY ? 0 : signY*(sizeY*m_resizeBoxDims[1])/2.0*B[1][1] ) + (m_fixedAxisZ ? 0 : signZ*(sizeZ*m_resizeBoxDims[2])/2.0*B[1][2] ),
+					  (m_fixedAxisX ? 0 : signX*(sizeX*m_resizeBoxDims[0])/2.0*B[2][0] ) + (m_fixedAxisY ? 0 : signY*(sizeY*m_resizeBoxDims[1])/2.0*B[2][1] ) + (m_fixedAxisZ ? 0 : signZ*(sizeZ*m_resizeBoxDims[2])/2.0*B[2][2] ) };
+		
 	m_shape->setLocation((float)(m_startLocationX+sV[0]),
 	     			     (float)(m_startLocationY+sV[1]),
 						 (float)(m_startLocationZ+sV[2]) );

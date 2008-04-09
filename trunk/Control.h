@@ -41,7 +41,8 @@
 #define CONTROL_MODE_TRI_VERTEX_C     22	// Move vertex C
 
 // Torus specific
-#define CONTROL_MODE_TORUS_RADIUS     30	// Chnge radius
+#define CONTROL_MODE_TORUS_RADIUS_MAJOR     30	// Chnge major radius
+#define CONTROL_MODE_TORUS_RADIUS_MINOR     31	// Chnge minor radius
 
 // Control colour scheme constants passed to setColourScheme()
 #define CONTROL_COLOURS_PRIMARY  	0

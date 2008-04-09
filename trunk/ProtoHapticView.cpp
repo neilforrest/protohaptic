@@ -31,7 +31,9 @@
 #include "Control.h"
 #include "CodeView.h"
 #include "TriVertexMove.h"
-#include "TorusRadiusResize.h"
+#include "TorusRadiusMajorResize.h"
+#include "TorusRadiusMinorResize.h"
+#include "TorusResize.h"
 
 // OpenGL Headers
 #include <gl/gl.h>
@@ -249,45 +251,47 @@ void HLCALLBACK onButtonDown(HLenum event, HLuint object,
 		if(mode==CONTROL_MODE_MOVE)
 		{
 			((CProtoHapticView*)userdata)->m_transform= new CMove(shape,pp[0],pp[1],pp[2],((CProtoHapticView*)userdata)->GetDocument());
-		}	
+		}
+
+		if (mode==CONTROL_MODE_RESIZE0 || mode==CONTROL_MODE_RESIZE1 || mode==CONTROL_MODE_RESIZE2 || mode==CONTROL_MODE_RESIZE3 ||
+			mode==CONTROL_MODE_RESIZE4 || mode==CONTROL_MODE_RESIZE5 || mode==CONTROL_MODE_RESIZE6 || mode==CONTROL_MODE_RESIZE7 )
+		{
+			if ( shape->getType() == SHAPE_TORUS )
+				((CProtoHapticView*)userdata)->m_transform= new CTorusResize((CTorus*)shape,pp[0],pp[1],pp[2],((CProtoHapticView*)userdata)->GetDocument());
+			else
+				((CProtoHapticView*)userdata)->m_transform= new CResize(shape,pp[0],pp[1],pp[2],((CProtoHapticView*)userdata)->GetDocument());
+		}
+
 		if(mode==CONTROL_MODE_RESIZE0)
 		{
-			((CProtoHapticView*)userdata)->m_transform= new CResize(shape,pp[0],pp[1],pp[2],((CProtoHapticView*)userdata)->GetDocument());
 			((CResize*)((CProtoHapticView*)userdata)->m_transform)->setOrientation(false,false,false);
 		}
 		if(mode==CONTROL_MODE_RESIZE1)
 		{
-			((CProtoHapticView*)userdata)->m_transform= new CResize(shape,pp[0],pp[1],pp[2],((CProtoHapticView*)userdata)->GetDocument());
 			((CResize*)((CProtoHapticView*)userdata)->m_transform)->setOrientation(true,false,false);
 		}
 		if(mode==CONTROL_MODE_RESIZE2)
 		{
-			((CProtoHapticView*)userdata)->m_transform= new CResize(shape,pp[0],pp[1],pp[2],((CProtoHapticView*)userdata)->GetDocument());
 			((CResize*)((CProtoHapticView*)userdata)->m_transform)->setOrientation(true,true,false);
 		}
 		if(mode==CONTROL_MODE_RESIZE3)
 		{
-			((CProtoHapticView*)userdata)->m_transform= new CResize(shape,pp[0],pp[1],pp[2],((CProtoHapticView*)userdata)->GetDocument());
 			((CResize*)((CProtoHapticView*)userdata)->m_transform)->setOrientation(false,true,false);
 		}
 		if(mode==CONTROL_MODE_RESIZE4)
 		{
-			((CProtoHapticView*)userdata)->m_transform= new CResize(shape,pp[0],pp[1],pp[2],((CProtoHapticView*)userdata)->GetDocument());
 			((CResize*)((CProtoHapticView*)userdata)->m_transform)->setOrientation(false,false,true);
 		}
 		if(mode==CONTROL_MODE_RESIZE5)
 		{
-			((CProtoHapticView*)userdata)->m_transform= new CResize(shape,pp[0],pp[1],pp[2],((CProtoHapticView*)userdata)->GetDocument());
 			((CResize*)((CProtoHapticView*)userdata)->m_transform)->setOrientation(true,false,true);
 		}
 		if(mode==CONTROL_MODE_RESIZE6)
 		{
-			((CProtoHapticView*)userdata)->m_transform= new CResize(shape,pp[0],pp[1],pp[2],((CProtoHapticView*)userdata)->GetDocument());
 			((CResize*)((CProtoHapticView*)userdata)->m_transform)->setOrientation(true,true,true);
 		}
 		if(mode==CONTROL_MODE_RESIZE7)
 		{
-			((CProtoHapticView*)userdata)->m_transform= new CResize(shape,pp[0],pp[1],pp[2],((CProtoHapticView*)userdata)->GetDocument());
 			((CResize*)((CProtoHapticView*)userdata)->m_transform)->setOrientation(false,true,true);
 		}
 		if(mode==CONTROL_MODE_ROTATE0)
@@ -320,9 +324,15 @@ void HLCALLBACK onButtonDown(HLenum event, HLuint object,
 		}
 
 		// Torus specific control modes
-		if (mode==CONTROL_MODE_TORUS_RADIUS)
+		if (mode==CONTROL_MODE_TORUS_RADIUS_MAJOR)
 		{
-			((CProtoHapticView*)userdata)->m_transform= new CTorusRadiusResize((CTorus*)shape,
+			((CProtoHapticView*)userdata)->m_transform= new CTorusRadiusMajorResize((CTorus*)shape,
+																		        pp[0],pp[1],pp[2] );
+		}
+
+		if (mode==CONTROL_MODE_TORUS_RADIUS_MINOR)
+		{
+			((CProtoHapticView*)userdata)->m_transform= new CTorusRadiusMinorResize((CTorus*)shape,
 																		        pp[0],pp[1],pp[2] );
 		}
 

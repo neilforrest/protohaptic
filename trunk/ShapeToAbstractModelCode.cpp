@@ -187,7 +187,7 @@ void CShapeToAbstractModelCode::GetInitCodeTorus ( CTorus* torus, CString *strin
 	string->AppendFormat ( "\r\n%s= new AbstractModel::CTorus ( );", *identifier );
 
 	// Set outer radius
-	string->AppendFormat ( "\r\n%s->SetRadius ( %f );", *identifier, torus->getRadius ( ) );
+	//string->AppendFormat ( "\r\n%s->SetRadius ( %f );", *identifier, torus->getRadius ( ) );
 	string->AppendFormat ( "\r\n%s->SetRadiusMajor ( %f );", *identifier, torus->getRadiusMajor ( ) );
 	string->AppendFormat ( "\r\n%s->SetRadiusMinor ( %f );", *identifier, torus->getRadiusMinor ( ) );
 
