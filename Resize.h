@@ -50,6 +50,10 @@ public:
 		Along each axis, false is at one end and true is at the other */
 	void setOrientation(bool x, bool y, bool z);
 
+	/** Set the size of the box on whose corners the resize edit-points are placed.
+	    In object coordinates. The default is a unit cube. The box is centred on the origin of object space */
+	void setResizeBoxDimentions ( float x, float y, float z );
+
 	/** Destroy the resize operation */
 	virtual ~CResize();
 protected:
@@ -86,8 +90,11 @@ protected:
 	    snap-to feature */
 	CProtoHapticDoc *m_document;
 
-	// Remember which axes are fixed
+	/** Remember which axes are fixed */
 	bool m_fixedAxisX, m_fixedAxisY, m_fixedAxisZ;
+
+	/** Size of the resize edit-point box, centered on object origin, which may be different from scaling/size of shape (e.g. torus) */
+	float m_resizeBoxDims[3];
 };
 
 #endif // !defined(AFX_RESIZE_H__47ADAA8E_32F1_4C65_9E42_8B616109816D__INCLUDED_)

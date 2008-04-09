@@ -24,4 +24,5 @@ protected:
 
 	/** The cylinder's ratio edit point */
 	CEditPoint* m_radiusEdit;
+	CEditPoint* m_radiusMinorEdit;
 };

@@ -998,7 +998,7 @@ void CAbstractModelCodeToDocument::GetShapeHapticsLine ( float* stiffness,
 }
 
 // Get the torus radius associated with the given shape identifier in the inFile
-void CAbstractModelCodeToDocument::GetTorusRadius ( float* radius,
+void CAbstractModelCodeToDocument::GetTorusRadii ( float* radiusMinor, float* radiusMajor,
 					  CString* identifier, std::ifstream* inFile )
 {
 	// Go to start of file
@@ -1013,7 +1013,7 @@ void CAbstractModelCodeToDocument::GetTorusRadius ( float* radius,
 	GetLogicalLine ( &line, inFile );
 
 	// Process first line
-	GetTorusRadiusLine ( radius, identifier, &line );
+	GetTorusRadiiLine ( radiusMinor, radiusMajor, identifier, &line );
 
 	// While more data
 	while ( inFile->good () && !error)
@@ -1022,12 +1022,12 @@ void CAbstractModelCodeToDocument::GetTorusRadius ( float* radius,
 		GetLogicalLine ( &line, inFile );
 
 		// Process line 
-		GetTorusRadiusLine ( radius, identifier, &line );
+		GetTorusRadiiLine ( radiusMinor, radiusMajor, identifier, &line );
 	}
 }
 
 // Get the triangle vertices associated with the given shape identifier in the line
-void CAbstractModelCodeToDocument::GetTorusRadiusLine ( float* radius,
+void CAbstractModelCodeToDocument::GetTorusRadiiLine ( float* radiusMinor, float* radiusMajor,
 					      CString* identifier, CString* line )
 {
 	CString operation;						// Name of operation on object
@@ -1042,8 +1042,8 @@ void CAbstractModelCodeToDocument::GetTorusRadiusLine ( float* radius,
 		// error, don't understand parameter
 		bool parameterValueError= false;
 
-		// if found SetStiffness function
-		if ( operation == "SetRadius" )
+		// if found SetRadiusMajor function
+		if ( operation == "SetRadiusMajor" )
 		{
 			// Check number of arguments
 			if ( parameters.size () == 1 )
@@ -1052,12 +1052,41 @@ void CAbstractModelCodeToDocument::GetTorusRadiusLine ( float* radius,
 				if ( IsFloatLiteral ( &parameters.at ( 0 ) ) )
 				{
 					// convert it to float
-					sscanf ( parameters.at ( 0 ), "%f", radius );
+					sscanf ( parameters.at ( 0 ), "%f", radiusMajor );
 				}
 				else
 				{
 					// Try to evaluate expression
-					if ( !EvaluateFloatExpression ( &parameters.at (0), radius ) )
+					if ( !EvaluateFloatExpression ( &parameters.at (0), radiusMajor ) )
+					{
+						// error, don't understand parameter
+						parameterValueError= true;
+					}
+				}
+			}
+			else
+			{
+				// Error, wrong number of parameters for function
+				parameterError= true;
+			}
+		}
+
+		// if found SetRadiusMinor function
+		if ( operation == "SetRadiusMinor" )
+		{
+			// Check number of arguments
+			if ( parameters.size () == 1 )
+			{
+				// Check parameter value
+				if ( IsFloatLiteral ( &parameters.at ( 0 ) ) )
+				{
+					// convert it to float
+					sscanf ( parameters.at ( 0 ), "%f", radiusMinor );
+				}
+				else
+				{
+					// Try to evaluate expression
+					if ( !EvaluateFloatExpression ( &parameters.at (0), radiusMinor ) )
 					{
 						// error, don't understand parameter
 						parameterValueError= true;
@@ -1654,12 +1683,13 @@ void CAbstractModelCodeToDocument::BuildDocument ( CString filename, CProtoHapti
 		case Torus:
 			shape= new CTorus ( );
 
-			// Get radius of torus
-			float radius;
-			GetTorusRadius ( &radius, &name, &inFile );
+			// Get radii of torus
+			float r, R;
+			GetTorusRadii ( &r, &R, &name, &inFile );
 
-			// Set radius of torus
-			((CTorus*)shape)->setRadius ( radius );
+			// Set radii of torus
+			((CTorus*)shape)->setRadiusMinor ( r );
+			((CTorus*)shape)->setRadiusMajor ( R );
 
 			break;
 		case Polygon:

@@ -19,12 +19,14 @@
 
 #include "Shape.h"
 
-#define TRANSFORM_RESIZE				0
-#define TRANSFORM_ROTATE				1
-#define TRANSFORM_TRANSLATE				2
-#define TRANSFORM_RATIO					3
-#define TRANSFORM_TRI_VERTEX_MOVE		4
-#define TRANSFORM_TORUS_RADIUS_RESIZE	5
+#define TRANSFORM_RESIZE					0
+#define TRANSFORM_ROTATE					1
+#define TRANSFORM_TRANSLATE					2
+#define TRANSFORM_RATIO						3
+#define TRANSFORM_TRI_VERTEX_MOVE			4
+#define TRANSFORM_TORUS_RADIUS_RESIZE_MAJOR	5
+#define TRANSFORM_TORUS_RADIUS_RESIZE_MINOR	6
+#define TRANSFORM_TORUS_RESIZE				7
 
 /** Represents the transformation of a shape */
 class CTransform  

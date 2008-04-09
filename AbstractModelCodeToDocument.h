@@ -113,12 +113,12 @@ protected:
 						           CString* identifier, CString* line );
 
 	// Get the torus radius associated with the given shape identifier in the inFile
-	void GetTorusRadius ( float* radius,
-						  CString* identifier, std::ifstream* inFile );
+	void GetTorusRadii ( float* radiusMinor, float* radiusMajor,
+						 CString* identifier, std::ifstream* inFile );
 
 	// Get the triangle vertices associated with the given shape identifier in the line
-	void GetTorusRadiusLine ( float* radius,
-						      CString* identifier, CString* line );
+	void GetTorusRadiiLine ( float* radiusMinor, float* radiusMajor,
+						     CString* identifier, CString* line );
 
 	// Get the color associated with the given shape identifier in the string
 	void GetShapeColorLine ( float* rgb, CString* identifier, CString* line );

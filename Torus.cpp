@@ -7,8 +7,8 @@
 CTorus::CTorus(void)
 {
 	// Set Default parameters
-	m_radiusMajor= 0.5;
-	m_radiusMinor= 0.5;
+	m_radiusMajor= 1.0;
+	m_radiusMinor= 0.25;
 
 	m_drawnFraction= 1.0; //i.e. Complete
 
