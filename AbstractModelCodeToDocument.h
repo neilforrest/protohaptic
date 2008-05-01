@@ -120,6 +120,14 @@ protected:
 	void GetTorusRadiiLine ( float* radiusMinor, float* radiusMajor,
 						     CString* identifier, CString* line );
 
+	// Get the cylinder ratio associated with the given shape identifier in the inFile
+	void GetCylinderRatio ( float* ratio,
+							CString* identifier, std::ifstream* inFile );
+
+	// Get the cylinder ratio associated with the given shape identifier in the line
+	void GetCylinderRatioLine ( float* ratio,
+									CString* identifier, CString* line );
+
 	// Get the color associated with the given shape identifier in the string
 	void GetShapeColorLine ( float* rgb, CString* identifier, CString* line );
 

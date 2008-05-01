@@ -24,7 +24,7 @@
 #define MAX_SHAPES 1000
 
 /** The maximum number of undo operations to support */
-#define MAX_HISTORY 10
+#define MAX_HISTORY 20
 
 /** Represents a ProtoHaptic document or scene model */
 class CProtoHapticDoc : public CDocument

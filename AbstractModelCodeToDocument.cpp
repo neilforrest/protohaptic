@@ -1102,6 +1102,82 @@ void CAbstractModelCodeToDocument::GetTorusRadiiLine ( float* radiusMinor, float
 	}
 }
 
+// Get the cylinder ratio associated with the given shape identifier in the inFile
+void CAbstractModelCodeToDocument::GetCylinderRatio ( float* ratio,
+						CString* identifier, std::ifstream* inFile )
+{
+	// Go to start of file
+	inFile->clear ( );
+	inFile->seekg ( 0 );
+	lineNumber= 0;	// Currently processing this line
+
+	// Look at each line
+
+	// Get first line
+	CString line;
+	GetLogicalLine ( &line, inFile );
+
+	// Process first line
+	GetCylinderRatioLine ( ratio, identifier, &line );
+
+	// While more data
+	while ( inFile->good () && !error)
+	{
+		// Get next line
+		GetLogicalLine ( &line, inFile );
+
+		// Process line 
+		GetCylinderRatioLine ( ratio, identifier, &line );
+	}
+}
+
+// Get the cylinder ratio associated with the given shape identifier in the line
+void CAbstractModelCodeToDocument::GetCylinderRatioLine ( float* ratio,
+								CString* identifier, CString* line )
+{
+	CString operation;						// Name of operation on object
+	std::vector<CString> parameters;		// list of parameters as strings
+
+	// Get details of operation on identifier (and process if successfull)
+	if ( GetOperation ( identifier, line, &operation, &parameters ) )
+	{
+		// error, wrong number of parameters for function
+		bool parameterError= false;
+
+		// error, don't understand parameter
+		bool parameterValueError= false;
+
+		// if found SetRadiusMajor function
+		if ( operation == "SetRatio" )
+		{
+			// Check number of arguments
+			if ( parameters.size () == 1 )
+			{
+				// Check parameter value
+				if ( IsFloatLiteral ( &parameters.at ( 0 ) ) )
+				{
+					// convert it to float
+					sscanf ( parameters.at ( 0 ), "%f", ratio );
+				}
+				else
+				{
+					// Try to evaluate expression
+					if ( !EvaluateFloatExpression ( &parameters.at (0), ratio ) )
+					{
+						// error, don't understand parameter
+						parameterValueError= true;
+					}
+				}
+			}
+			else
+			{
+				// Error, wrong number of parameters for function
+				parameterError= true;
+			}
+		}
+	}
+}
+
 // Get the triangle vertices associated with the given shape identifier in the inFile
 void CAbstractModelCodeToDocument::GetTriangleVertices ( std::vector<float*>* verts,
 					       CString* identifier, std::ifstream* inFile )
@@ -1679,6 +1755,14 @@ void CAbstractModelCodeToDocument::BuildDocument ( CString filename, CProtoHapti
 			break;
 		case Cylinder:
 			shape= new CCylinder ( 1, 1, 1 );
+	
+			// Get cylinder/cone ratio
+			float ratio;
+			GetCylinderRatio ( &ratio, &name, &inFile );
+
+			// Set cylinder/cone ratio
+			((CCylinder*)shape)->setRatio ( ratio );
+
 			break;
 		case Torus:
 			shape= new CTorus ( );
