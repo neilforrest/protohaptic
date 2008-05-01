@@ -66,9 +66,13 @@ void CProtoHapticDoc::clean()
 	if(m_historyCount>0) 
 	{
 		OutputDebugString("Destroying Root Document...\n");
+		//MessageBox ( 0, "Destroying Root Document...", "", MB_OK );
 	}
 	else
+	{
 		OutputDebugString("->Destroying Historic Document...\n");
+		//MessageBox ( 0, "Destroying Historic Document...", "", MB_OK );
+	}
 
 	int i;
 	for(i= 0; i<m_shapeCount; i++)
@@ -367,7 +371,6 @@ BOOL CProtoHapticDoc::OnNewDocument()
 		CView* pView = GetNextView(pos);
 		((CProtoHapticView*)pView)->Pause();
 		((CProtoHapticView*)pView)->Deselect();
-		((CProtoHapticView*)pView)->Play();
 	}
 
 	// Render an empty scene and syc, so that shape callbacks
@@ -391,6 +394,13 @@ BOOL CProtoHapticDoc::OnNewDocument()
 	//dSpaceDestroy(m_spaceID);
 	m_worldID= dWorldCreate();
 	m_spaceID= dHashSpaceCreate( 0 );
+
+	pos = GetFirstViewPosition();
+	while (pos != NULL)
+	{
+		CView* pView = GetNextView(pos);
+		((CProtoHapticView*)pView)->Play();
+	}
 
 	return TRUE;
 }
@@ -602,14 +612,15 @@ void CProtoHapticDoc::RemoveShape(CShape* shape)
 	}
 	m_shapeCount--;
 }
-
+//C:\Documents and Settings\Haptics\Desktop\CatSimulator\CatCalibration\AbstractModel\Release
 void CProtoHapticDoc::pushHistory(CProtoHapticDoc *doc)
 {
 	if(m_historyCount<MAX_HISTORY) {
 		m_history[m_historyCount]= doc;
 		m_historyCount++;
 	} else {
-		delete m_history[0]; //delete oldest and shift along
+		//MessageBox ( 0, "pushHistory: Deleting historic document", "", MB_OK );
+		//delete m_history[0]; //delete oldest and shift along
 		int i;
 		for(i= 1; i<MAX_HISTORY; i++) {
 			m_history[i-1]= m_history[i];
