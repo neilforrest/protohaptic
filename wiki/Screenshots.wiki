@@ -1,7 +1,5 @@
 #summary Screenshots of ProtoHaptic
 
-= Screenshots =
-
 http://srvgla.no-ip.org/ProtoHapticGoogleCode/protohaptic_airship.jpg
 
 http://srvgla.no-ip.org/ProtoHapticGoogleCode/protohaptic_chess.jpg
