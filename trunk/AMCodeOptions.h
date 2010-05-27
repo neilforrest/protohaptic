@@ -2,7 +2,7 @@
 #include "afxwin.h"
 
 
-// CAMCodeOptions dialog
+// CAMCodeOptions dialog 
 
 class CAMCodeOptions : public CDialog
 {
