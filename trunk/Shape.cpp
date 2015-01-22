@@ -14,7 +14,7 @@ using namespace std;
 
 #include <mmsystem.h>
 
-static float identity[] = { 1, 0, 0, 0,
+static float identitym[] = { 1, 0, 0, 0,
 							0, 1, 0, 0,
 							0, 0, 1, 0,
 							0, 0, 0, 1 };
@@ -30,7 +30,7 @@ CShape::CShape()
 {
 	int i;
 	for(i= 0; i<16; i++)
-		m_rotation[i]= identity[i];
+		m_rotation[i]= identitym[i];
 
 	m_rotationFixed= false;
 	m_collisionDynamic= false;
