@@ -13,6 +13,7 @@
 #endif // _MSC_VER > 1000
 
 #include "ShapeToAbstractModelCode.h"
+#include "ShapeToX3DCode.h"
 
 /// A form view that displays the scene as a sequence of OpenGL, glu and glut calls
 class CCodeView : public CFormView
@@ -61,6 +62,9 @@ protected:
 
 	/// AbstractModel translator
 	CShapeToAbstractModelCode* amTranslator;
+
+  /// X3D translator
+  CShapeToX3DCode* x3dTranslator;
 
 	/// Font to use for the edit box
 	CFont* editFont;

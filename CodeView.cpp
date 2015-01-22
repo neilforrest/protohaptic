@@ -41,6 +41,7 @@ CCodeView::CCodeView()
 
 	// Create an AbstractModel translator
 	amTranslator= new CShapeToAbstractModelCode ( );
+  x3dTranslator= new CShapeToX3DCode ( );
 
 	// Font to use for the edit box
 	editFont= new CFont ();
@@ -62,6 +63,7 @@ CCodeView::~CCodeView()
 {
 	// The AbstractModel translator
 	delete amTranslator;
+  delete x3dTranslator;
 
 	// Font to use for the edit box
 	delete editFont;
@@ -206,6 +208,39 @@ void CCodeView::OnDraw(CDC* pDC)
 		}
 
 		break;
+
+  case 2:   // X3D Code View Selected
+
+    // Add Header Comments
+		s= "<!-- ProtoHaptic Code View\r\n// Output Type: X3D\r\n";
+		s+= "// ============================== -->\r\n";
+
+    // If document set
+		if(doc!=NULL)
+		{
+
+			// Generate declaration code for each shape
+			for(int i= 0; i<doc->GetShapeCount(); i++)
+			{
+				// Create a unique numeric identifier for the shape
+				//CString id;
+				//id.Format ( "shape%d", i );
+
+				// Get init code for shape
+				CString code;
+				x3dTranslator->GetDeclareCode ( doc->GetShape(i), &code, &(doc->GetShape(i)->GetName()), false );
+
+				// Add a new line to the code
+				s= s + code + "\r\n";
+			}
+
+			// Assign the generated string to the edit box
+			CWnd *p= NULL;
+			p = GetDlgItem(IDC_EDIT1);
+			((CEdit*)p)->SetWindowText(s);
+		}
+
+    break;
 	}
 
 	// Use the font to paint a control.
@@ -323,6 +358,7 @@ void CCodeView::OnSize(UINT nType, int cx, int cy)
 		// Add options for code output
 		m_comboCodeTypes->AddString ( "OpenGL" );
 		m_comboCodeTypes->AddString ( "AbstractModel" );
+    m_comboCodeTypes->AddString ( "X3D" );
 
 		// Set a default option
 		m_comboCodeTypes->SetCurSel ( 0 );	// Set to last string addeded

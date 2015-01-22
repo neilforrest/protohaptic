@@ -13,6 +13,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#define dDOUBLE
 #include "ode/ode.h"
 #include "shape.h"
 #include "hl/hl.h"
