@@ -76,7 +76,7 @@ void CVarValueDlg::OnBnClickedLoad()
 	if ( translator != NULL && dlg.DoModal() == IDOK )
 	{
 		// Load database
-		fname= dlg.GetFileName();
+    fname= dlg.GetPathName();
 
 		// Load database
 		translator->LoadVariableDatabase ( fname );
