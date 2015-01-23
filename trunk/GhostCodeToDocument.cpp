@@ -1961,20 +1961,25 @@ void CGhostCodeToDocument::BuildDocument ( CString filename, CProtoHapticDoc* do
 						   &identifiers.at ( i ), &inFile );
 
 		// Set haptic properties of PH shape
-		float ohStiffness= stiffness / maxStiffness;
-		float ohDamping= damping / maxDamping;
+		float ohStiffness= maxStiffness > 0 ? stiffness / maxStiffness : stiffness;
+		float ohDamping= maxDamping > 0 ? damping / maxDamping : damping;
 
 		// Cap between 0..1
-		if ( ohStiffness > 1 ) ohStiffness= 1.0;
-		if ( ohDamping > 1 ) ohDamping= 1.0;
-		if ( ohStiffness < -1 ) ohStiffness= -1.0;
-		if ( ohDamping < -1 ) ohDamping= -1.0;
+    if ( maxStiffness > 0 ) {
+		  if ( ohStiffness > 1 ) ohStiffness= 1.0;
+      if ( ohStiffness < -1 ) ohStiffness= -1.0;
+    }
+
+    if ( maxDamping > 0 ) {
+		  if ( ohDamping > 1 ) ohDamping= 1.0;
+		  if ( ohDamping < -1 ) ohDamping= -1.0;
+    }
 		
 		shape->setStiffness ( ohStiffness );
 		shape->setDampening ( ohDamping );
 
-		shape->setStaticFriction ( 0 );//staticFriction );
-		shape->setDynamicFriction ( 0 );//dynamicFriction );
+		shape->setStaticFriction ( staticFriction );
+		shape->setDynamicFriction ( dynamicFriction );
 
 		// If shape should be added to the model (not using root sep) (comps added later)
 		if ( m_rootSeparator == "" && shape->getType() != SHAPE_COMPOSITE )

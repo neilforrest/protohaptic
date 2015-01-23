@@ -118,12 +118,6 @@ void CGHOSTPreImportDlg::OnOK()
 		return;
 	}
 
-	if ( maxStiffness <= 0 || maxDamping <= 0 )
-	{
-		MessageBox ( "Numbers must be > 0", "Error", MB_OK );
-		return;
-	}
-
 	CDialog::OnOK();
 }
 
@@ -132,12 +126,17 @@ void CGHOSTPreImportDlg::OnCbnSelchangeDevice()
 	// TODO: Add your control notification handler code here
 	int index= m_device.GetCurSel ();
 
-	if ( index == 0 ) // Omni
+  if ( index == 0 ) // Absolute values
+  {
+    m_maxDamp.SetWindowText ( "-1" );
+		m_maxStiff.SetWindowText ( "-1" );
+  } 
+  else if ( index == 1 ) // Omni
 	{
 		m_maxDamp.SetWindowText ( "0.003" );
 		m_maxStiff.SetWindowText ( "0.5" );
 	}
-	else if ( index == 1 ) // Premium
+	else if ( index == 2 ) // Premium
 	{
 		m_maxDamp.SetWindowText ( "0.002" );
 		m_maxStiff.SetWindowText ( "0.6" );
