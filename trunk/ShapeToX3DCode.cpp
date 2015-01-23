@@ -188,6 +188,9 @@ void CShapeToX3DCode::GetTransformedShape ( CShape& shape, CString& string, cons
   string.AppendFormat ( "\r\n  <Shape DEF='S_%s'>", identifier );
   string.AppendFormat ( "\r\n    <Appearance DEF='A_%s'>", identifier );
   string.AppendFormat ( "\r\n      <Material DEF='M_%s' />", identifier );
+  string.AppendFormat ( "\r\n      <FrictionalSurface DEF='FS_%s' stiffness='%f' damping='%f' staticFriction='%f' dynamicFriction='%f' useRelativeValues='false' />", 
+    identifier,
+    shape.getStiffness(), shape.getDampening(), shape.getStaticFriction(), shape.getDynamicFriction() );
   string.AppendFormat ( "\r\n    </Appearance>" );
   string.Append ( "\r\n    " + shapeCode );
   string.AppendFormat ( "\r\n  </Shape>" );
